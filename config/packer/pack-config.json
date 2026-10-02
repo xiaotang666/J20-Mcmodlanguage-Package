@@ -1,17 +1,42 @@
 {
-  "description": "打包器配置：目标资源包矩阵与 pack_format 映射",
+  "description": "打包器配置：版本组 × 加载器矩阵与 pack.mcmeta 格式映射",
   "repo": "xiaotang666/J20-Mcmodlanguage-Package",
   "release_base_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download",
-  "packs": [
-    { "mc_version": "1.20.1", "loader": "forge", "pack_format": 15 },
-    { "mc_version": "1.20.1", "loader": "fabric", "pack_format": 15 },
-    { "mc_version": "1.16.5", "loader": "forge", "pack_format": 6 }
-  ],
-  "pack_format_table": {
-    "1.16.5": 6,
-    "1.18.2": 8,
-    "1.19.2": 9,
-    "1.20.1": 15
+  "version_group_rule": "mc_version = 版本号前两段（1.20.1→1.20，1.21.11→1.21，26.1.2→26.1）；组内 patch 共用同一资源包，对齐 i18n 的大版本分组",
+  "content_groups": {
+    "forge": {
+      "label": "(Neo)Forge",
+      "i18n_dir_suffixes": [""]
+    },
+    "fabric": {
+      "label": "Fabric",
+      "i18n_dir_suffixes": ["-fabric", ""]
+    }
   },
+  "pack_formats": {
+    "1.20": { "pack_format": 15, "supported_formats": [15, 32] },
+    "1.21": { "pack_format": 34, "supported_formats": [34, 64], "min_format": [69, 0], "max_format": [75, 9] },
+    "26.1": { "min_format": [65, 0], "max_format": [84, 9] },
+    "26.2": { "min_format": [85, 0], "max_format": [88, 9] },
+    "26.3": { "min_format": [89, 0], "max_format": [97, 9] }
+  },
+  "packs": [
+    { "mc_version": "1.20", "loader": "forge", "content": "forge" },
+    { "mc_version": "1.20", "loader": "neoforge", "content": "forge", "copy_of": "forge" },
+    { "mc_version": "1.20", "loader": "fabric", "content": "fabric" },
+    { "mc_version": "1.21", "loader": "forge", "content": "forge" },
+    { "mc_version": "1.21", "loader": "neoforge", "content": "forge", "copy_of": "forge" },
+    { "mc_version": "1.21", "loader": "fabric", "content": "fabric" },
+    { "mc_version": "26.1", "loader": "forge", "content": "forge" },
+    { "mc_version": "26.1", "loader": "neoforge", "content": "forge", "copy_of": "forge" },
+    { "mc_version": "26.1", "loader": "fabric", "content": "fabric" },
+    { "mc_version": "26.2", "loader": "forge", "content": "forge" },
+    { "mc_version": "26.2", "loader": "neoforge", "content": "forge", "copy_of": "forge" },
+    { "mc_version": "26.2", "loader": "fabric", "content": "fabric" },
+    { "mc_version": "26.3", "loader": "forge", "content": "forge" },
+    { "mc_version": "26.3", "loader": "neoforge", "content": "forge", "copy_of": "forge" },
+    { "mc_version": "26.3", "loader": "fabric", "content": "fabric" }
+  ],
+  "vp_groups": ["1.20", "1.21", "26.1", "26.2", "26.3"],
   "version_format": "YYYY.MM.DD-NNN"
 }

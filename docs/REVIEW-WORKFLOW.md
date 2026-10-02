@@ -20,7 +20,8 @@ python src/ai-translate/mark_draft.py --mod-dir <mod_dir>
 # 4) 人工审核：对照 REVIEW-NOTES.md 修改 待审核/<mod_dir>/zh_cn.json
 
 # 5) 审核通过后入库（自动跑 Linter，有错误拒绝入库并回滚；草稿归档 _approved/）
-python src/ai-translate/approve.py --mod-dir <mod_dir> --namespace <ns> --mc-version 1.20.1
+#    --mc-version 填版本组（1.20 / 1.21 / 26.1 / 26.2 / 26.3）
+python src/ai-translate/approve.py --mod-dir <mod_dir> --namespace <ns> --mc-version 1.20
 ```
 
 ## 标注规则

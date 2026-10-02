@@ -10,7 +10,8 @@ projects/<mc_version>/assets/<namespace>/lang/en_us.json   # 源文件（对照�
 - 打包时本目录文件**覆盖** i18n 拉取的同名文件（`overlay_j20.py`）；
 - 新增翻译放入对应路径，或经 待审核/ 工作流由 `approve.py` 自动入库；
 - 提交前必须过 `python src/linter/run.py projects/`（错误清零）；
-- `<mc_version>` 必须在 `config/packer/pack-config.json` 的 `pack_format_table` 中有映射。
+- `<mc_version>` 为**版本组**（版本号前两段，如 `1.20`、`26.1`），必须在
+  `config/packer/pack-config.json` 的 `pack_formats` 中有映射；组内小版本共用同一资源包。
 
 ## tm/ — 翻译记忆库（TMX）
 

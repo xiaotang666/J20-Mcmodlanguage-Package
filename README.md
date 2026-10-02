@@ -22,10 +22,10 @@
 
 | 资产 | 说明 |
 | --- | --- |
-| `pack-{mc_version}-{loader}.zip` | 最终汉化资源包（按 MC 版本与加载器区分） |
+| `pack-{mc_version}-{loader}.zip` | 最终汉化资源包（按 MC 版本组与加载器区分） |
 | `vp-modules-{mc_version}.zip` | Vault Patcher 硬编码补丁模块包 |
 
-Release 版本号格式为 `YYYY.MM.DD-NNN`（当日构建序号）。
+`mc_version` 为 MC 版本组（版本号前两段），当前覆盖 **1.20 / 1.21 / 26.1 / 26.2 / 26.3**（即 1.20.1 及以上的所有 MC 版本）：组内小版本共用同一资源包（如 1.20.1 与 1.20.2 都用 `pack-1.20-*`），Forge 与 NeoForge 共用同一份内容（对齐 i18n 库的打包方式）。Release 版本号格式为 `YYYY.MM.DD-NNN`（当日构建序号）。
 
 ## 翻译来源与致谢
 

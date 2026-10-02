@@ -1,10 +1,11 @@
 """最终资源包校验器。
 
 用法：
-    python src/merger/verify.py build/pack-1.20.1-forge.zip [more.zip ...]
+    python src/merger/verify.py build/pack-1.20-forge.zip [more.zip ...]
 
 检查项：
-- pack.mcmeta 存在、合法 JSON、pack_format 为整数、description 含 i18n 署名
+- pack.mcmeta 存在、合法 JSON、格式声明合法（pack_format 整数，或 min_format/max_format
+  新方案——整数或 [major, minor] 元组）、description 含 i18n 署名
 - assets/<namespace>/lang/zh_cn.* 至少存在一份
 - LICENSE-i18n / LICENSE-j20 / ATTRIBUTION.md 均在包内
 - vaultpatcher/modules/ 若存在则结构正确（.json 直接位于该目录下）
@@ -19,6 +20,14 @@ from pathlib import Path
 REQUIRED = ("LICENSE-i18n", "LICENSE-j20", "ATTRIBUTION.md")
 
 
+def _fmt_value_ok(v) -> bool:
+    """格式版本值：整数，或 [major, minor] 元组。"""
+    if isinstance(v, int) and not isinstance(v, bool):
+        return True
+    return (isinstance(v, list) and len(v) == 2
+            and all(isinstance(x, int) and not isinstance(x, bool) for x in v))
+
+
 def verify_zip(path: Path) -> list[str]:
     errors = []
     with zipfile.ZipFile(path) as zf:
@@ -28,10 +37,12 @@ def verify_zip(path: Path) -> list[str]:
         else:
             try:
                 meta = json.loads(zf.read("pack.mcmeta").decode("utf-8"))
-                fmt = meta.get("pack", {}).get("pack_format")
-                if not isinstance(fmt, int):
-                    errors.append("pack.mcmeta 的 pack_format 不是整数")
-                desc = json.dumps(meta.get("pack", {}).get("description", ""), ensure_ascii=False)
+                pack = meta.get("pack", {})
+                legacy = isinstance(pack.get("pack_format"), int) and not isinstance(pack.get("pack_format"), bool)
+                modern = _fmt_value_ok(pack.get("min_format")) and _fmt_value_ok(pack.get("max_format"))
+                if not (legacy or modern):
+                    errors.append("pack.mcmeta 格式声明非法（需整数 pack_format，或 min_format+max_format）")
+                desc = json.dumps(pack.get("description", ""), ensure_ascii=False)
                 if "i18n" not in desc:
                     errors.append("pack.mcmeta description 缺少 i18n 署名")
             except (ValueError, UnicodeDecodeError) as e:

@@ -18,6 +18,7 @@ import argparse
 import datetime as dt
 import json
 import os
+import re
 import sys
 import urllib.request
 from pathlib import Path
@@ -54,9 +55,21 @@ def api_translate(pairs: list[tuple[str, str]], glossary: list[dict], batch_size
             headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}"})
         with urllib.request.urlopen(req, timeout=300) as resp:
             content = json.loads(resp.read().decode("utf-8"))["choices"][0]["message"]["content"]
-        # 容错：剥掉可能的 ```json 围栏
-        content = content.strip().removeprefix("```json").removesuffix("```").strip()
-        out.update(json.loads(content))
+        # 容错解析：剥 ``` 围栏 → 直接解析 → 正则提取首个 JSON 对象 → 仍失败则整批标【待翻译】
+        content = content.strip()
+        if content.startswith("```"):
+            content = re.sub(r"^```[a-zA-Z]*\n?", "", content)
+            content = re.sub(r"\n?```$", "", content).strip()
+        try:
+            out.update(json.loads(content))
+        except ValueError:
+            m = re.search(r"\{.*\}", content, re.S)
+            try:
+                out.update(json.loads(m.group(0))) if m else (_ for _ in ()).throw(ValueError("no json"))
+            except ValueError:
+                for k, v in batch:
+                    out.setdefault(k, f"【待翻译】{v}")
+                print(f"[WARN] 第 {i // batch_size + 1} 批模型输出无法解析，整批标【待翻译】", file=sys.stderr)
         print(f"[API] 已翻译 {min(i + batch_size, len(pairs))}/{len(pairs)}")
     return out
 

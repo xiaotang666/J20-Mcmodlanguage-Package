@@ -45,21 +45,29 @@ def fetch_with_fallback(path: str, config: dict) -> tuple[bytes | None, str | No
     """按 base_url + fallback_urls 依次尝试拉取 i18n 仓库中的相对路径。
 
     返回 (内容, 命中的URL, 尝试过的URL列表)；全部失败返回 (None, None, tried)。
-    每个源失败后按 retry_count 重试，重试间隔 retry_delay 秒。
+    确定性失败（404/403/400）不重试，直接换下一个源；仅超时/网络/5xx 按 retry_count 重试。
     """
     repo = config["source"]
     branch = config["branch"]
     bases = [config["base_url"]] + list(config.get("fallback_urls", []))
+    retry_count = int(config.get("retry_count", 3))
+    retry_delay = int(config.get("retry_delay", 5))
+    timeout = int(config.get("request_timeout", 15))
     tried: list[str] = []
     for base in bases:
         url = base.format(repo=repo, branch=branch) + path
-        for attempt in range(int(config.get("retry_count", 3))):
+        for attempt in range(retry_count):
             tried.append(url)
             try:
-                return http_get(url, timeout=int(config.get("request_timeout", 30))), url, tried
-            except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, OSError):
-                if attempt < int(config.get("retry_count", 3)) - 1:
-                    time.sleep(int(config.get("retry_delay", 5)))
+                return http_get(url, timeout=timeout), url, tried
+            except urllib.error.HTTPError as e:
+                if e.code in (400, 403, 404, 410, 451):
+                    break  # 确定性失败：文件在该源不存在，换下一个源
+                if attempt < retry_count - 1:
+                    time.sleep(retry_delay)
+            except (urllib.error.URLError, TimeoutError, OSError):
+                if attempt < retry_count - 1:
+                    time.sleep(retry_delay)
     return None, None, tried
 
 

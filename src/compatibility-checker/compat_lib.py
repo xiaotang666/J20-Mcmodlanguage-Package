@@ -109,18 +109,51 @@ def check_vp_zip_structure(path: Path) -> list[str]:
 
 
 def check_pack_format(projects_dir: Path, pack_config: dict) -> list[str]:
-    """projects/<mc_version>/ 目录必须能在 pack_format_table 中映射到整数。"""
+    """版本组 × 加载器矩阵一致性：
+    - projects/<版本组>/ 目录必须能在 pack_formats 中映射到合法格式声明；
+    - packs[] 的每个版本组必须有格式声明，内容组/copy_of 引用必须成立。
+    """
     errors = []
-    table = pack_config.get("pack_format_table", {})
+    table = pack_config.get("pack_formats", {})
+    contents = set(pack_config.get("content_groups", {}).keys())
+
+    def fmt_ok(spec: dict) -> bool:
+        legacy = "pack_format" in spec
+        modern = "min_format" in spec and "max_format" in spec
+        return legacy or modern
+
+    for group, spec in table.items():
+        if not isinstance(spec, dict) or not fmt_ok(spec):
+            errors.append(f"pack_formats.{group} 格式声明非法（需 pack_format 或 min_format+max_format）")
+
     for d in sorted(p for p in projects_dir.iterdir() if p.is_dir()):
         if d.name not in table:
-            errors.append(f"projects/{d.name} 在 pack_format_table 中无映射，pack_format 无法确定")
+            errors.append(f"projects/{d.name} 在 pack_formats 中无映射，pack.mcmeta 无法确定")
+
+    seen_assets = set()
     for pack in pack_config.get("packs", []):
-        if pack["mc_version"] not in table:
-            errors.append(f"目标包 {pack['mc_version']} 在 pack_format_table 中无映射")
-        elif table[pack["mc_version"]] != pack["pack_format"]:
-            errors.append(f"{pack['mc_version']} 的 pack_format 与映射表不一致："
-                          f"{pack['pack_format']} != {table[pack['mc_version']]}")
+        mc, loader = pack.get("mc_version"), pack.get("loader")
+        key = f"{mc}/{loader}"
+        if mc not in table:
+            errors.append(f"目标包 {mc} 在 pack_formats 中无映射")
+        if loader not in ("forge", "fabric", "neoforge"):
+            errors.append(f"{key} loader 非法（应为 forge/fabric/neoforge）")
+        content = pack.get("content")
+        if contents and content not in contents:
+            errors.append(f"{key} content 非法：{content}（应为 {'/'.join(sorted(contents))}）")
+        if "copy_of" in pack:
+            src = f"{mc}/{pack['copy_of']}"
+            if not any(p.get("mc_version") == mc and p.get("loader") == pack["copy_of"]
+                       and "copy_of" not in p for p in pack_config.get("packs", [])):
+                errors.append(f"{key} 的 copy_of 指向不存在的包：{src}")
+        if key in seen_assets:
+            errors.append(f"重复目标包：{key}")
+        seen_assets.add(key)
+
+    used = {p.get("mc_version") for p in pack_config.get("packs", [])}
+    for group in table:
+        if group not in used:
+            errors.append(f"pack_formats.{group} 未被任何目标包使用（多余或遗漏）")
     return errors
 
 

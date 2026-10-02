@@ -38,24 +38,25 @@ jobs:
           python src/compatibility-checker/check_vp_structure.py vaultpatcher/
           python src/merger/check_license.py --repo
 
-      # 3. 按清单拉取 i18n 指定文件
+      # 3. 按清单拉取 i18n 指定文件（按版本组 × 内容组分树）
       - name: Fetch specified i18n files
         run: |
           python src/merger/fetch_i18n_files.py \
             --manifest j20-manifest/file-selection.json \
             --config config/merger/i18n-source.json \
+            --pack-config config/packer/pack-config.json \
             --output build/i18n-extracted/
 
-      # 4. J20 自有翻译覆盖
+      # 4. J20 自有翻译覆盖（自动遍历 projects/ 全部版本组）
       - name: Overlay J20 translations
         run: |
           python src/merger/overlay_j20.py \
             --source projects/ \
             --target build/i18n-extracted/
 
-      # 5. 打包 VP 模块与最终资源包
+      # 5. 打包 VP 模块与最终资源包（按 pack-config 的 vp_groups / packs 全量产出）
       - name: Build VP modules
-        run: python src/packer/build_vp.py --mc-version 1.20.1 --output build/
+        run: python src/packer/build_vp.py --output build/
 
       - name: Package final resource packs
         run: python src/packer/build_final.py --lang-dir build/i18n-extracted/ --output build/

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-02T16:30:43Z",
+  "generated_at": "2026-10-02T17:51:40Z",
   "passed": true,
   "checks": [
     {
@@ -35,7 +35,7 @@
     {
       "check": "verify_packs",
       "passed": true,
-      "output": "[PASS] pack-1.16.5-forge.zip\n[PASS] pack-1.20.1-fabric.zip\n[PASS] pack-1.20.1-forge.zip"
+      "output": "[PASS] pack-1.20-fabric.zip\n[PASS] pack-1.20-forge.zip\n[PASS] pack-1.20-neoforge.zip\n[PASS] pack-1.21-fabric.zip\n[PASS] pack-1.21-forge.zip\n[PASS] pack-1.21-neoforge.zip\n[PASS] pack-26.1-fabric.zip\n[PASS] pack-26.1-forge.zip\n[PASS] pack-26.1-neoforge.zip\n[PASS] pack-26.2-fabric.zip\n[PASS] pack-26.2-forge.zip\n[PASS] pack-26.2-neoforge.zip\n[PASS] pack-26.3-fabric.zip\n[PASS] pack-26.3-forge.zip\n[PASS] pack-26.3-neoforge.zip"
     }
   ]
 }

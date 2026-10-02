@@ -11,17 +11,18 @@
 ## 本地构建全流程
 
 ```bash
-# 1. 按清单从 i18n 仓库拉取指定模组的翻译文件（含镜像回退 + 重试）
+# 1. 按清单从 i18n 仓库拉取指定模组的翻译文件（含镜像回退 + 重试；按版本组 × 内容组分树）
 python src/merger/fetch_i18n_files.py \
     --manifest j20-manifest/file-selection.json \
     --config config/merger/i18n-source.json \
+    --pack-config config/packer/pack-config.json \
     --output build/i18n-extracted/
 
-# 2. J20 自有翻译覆盖 i18n 拉取结果
+# 2. J20 自有翻译覆盖 i18n 拉取结果（自动遍历 projects/ 全部版本组）
 python src/merger/overlay_j20.py --source projects/ --target build/i18n-extracted/
 
-# 3. 打包 VP 模块与最终资源包
-python src/packer/build_vp.py --mc-version 1.20.1 --output build/
+# 3. 打包 VP 模块与最终资源包（按 pack-config 的 vp_groups / packs 全量产出）
+python src/packer/build_vp.py --output build/
 python src/packer/build_final.py --lang-dir build/i18n-extracted/ --output build/
 
 # 4. 校验产物与协议合规
@@ -33,7 +34,21 @@ python src/packer/gen_manifest.py --build-dir build/
 python src/compatibility-checker/run_all.py build/
 ```
 
-产物（命名冻结，禁止更改）：`build/pack-{mc_version}-{loader}.zip`、`build/vp-modules-{mc_version}.zip`。
+产物（命名冻结，禁止更改）：`build/pack-{版本组}-{loader}.zip`、`build/vp-modules-{版本组}.zip`。
+
+## 版本组规则（对齐 i18n 大版本分组）
+
+`mc_version` = 版本号**前两段**（`1.20.1`→`1.20`，`1.21.11`→`1.21`，`26.1.2`→`26.1`）；组内小版本共用同一资源包。当前覆盖 **1.20 / 1.21 / 26.1 / 26.2 / 26.3**（即 1.20.1 及以上的所有 MC 正式版）。
+
+| 版本组 | 覆盖 | pack.mcmeta 方案 |
+| --- | --- | --- |
+| `1.20` | 1.20 – 1.20.6 | `pack_format:15` + `supported_formats:[15,32]` |
+| `1.21` | 1.21 – 1.21.11 | 双方案：`pack_format:34` + `supported_formats:[34,64]`（≤1.21.8）+ `min_format:[69,0]/max_format:[75,9]`（≥1.21.9） |
+| `26.1` | 26.1 – 26.1.2 | `min_format:[65,0]/max_format:[84,9]` |
+| `26.2` | 26.2 | `min_format:[85,0]/max_format:[88,9]` |
+| `26.3` | 26.3 | `min_format:[89,0]/max_format:[97,9]` |
+
+加载器共享（对齐 i18n）：Forge 与 NeoForge 共用同一份内容（`copy_of: "forge"`，字节级副本改名产出），Fabric 独立（拉取时自动优先 i18n 的 `-fabric` 版本目录）。新增版本组时：在 `pack_formats` 加格式声明 + `packs[]` 加三个目标包 + `vp_groups` 加组名 + `file-selection.json` 加版本组配置即可。
 
 ## 脚本清单
 

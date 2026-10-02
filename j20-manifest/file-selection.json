@@ -1,28 +1,300 @@
 {
   "description": "指定从 i18n 仓库拉取的模组语言文件清单",
-  "schema_note": "i18n 仓库实际路径为 projects/assets/<mod_dir>/<i18n_version_dir>/<namespace>/lang/<file>。mod_dir 是 i18n 的模组目录名（如 applied-energistics-2），namespace 是资源命名空间（如 appliedenergistics2），两者经常不同，必须分别填写。i18n_version_dirs 为按优先级排列的候选版本目录（i18n 只有粗粒度目录如 1.20/1.18，且可能带 -fabric 等后缀），拉取器依次尝试，取第一个命中的。",
+  "schema_note": "i18n 仓库实际路径为 projects/assets/<mod_dir>/<i18n_version_dir>/<namespace>/lang/<file>。mod_dir 是 i18n 的模组目录名（如 applied-energistics-2），namespace 是资源命名空间（如 appliedenergistics2），两者经常不同，必须分别填写。i18n_version_dirs 按优先级排列候选版本目录（含回退链）；Fabric 内容构建时拉取器会自动优先尝试 '<目录>-fabric' 变体。mc_versions 的键为版本组（版本号前两段），与 config/packer/pack-config.json 的 pack_formats 键一致。",
   "mc_versions": {
-    "1.20.1": {
-      "i18n_version_dirs": ["1.20", "1.20-fabric", "1.18", "1.16"],
-      "loaders": ["forge", "fabric"],
+    "1.20": {
+      "i18n_version_dirs": [
+        "1.20",
+        "1.19",
+        "1.18",
+        "1.16"
+      ],
+      "loaders": [
+        "forge",
+        "neoforge",
+        "fabric"
+      ],
       "mods": [
-        { "mod_dir": "create", "namespace": "create", "formats": ["json"] },
-        { "mod_dir": "mekanism", "namespace": "mekanism", "formats": ["json"] },
-        { "mod_dir": "applied-energistics-2", "namespace": "appliedenergistics2", "formats": ["json"] },
-        { "mod_dir": "botania", "namespace": "botania", "formats": ["json"] },
-        { "mod_dir": "ars-nouveau", "namespace": "ars_nouveau", "formats": ["json"] },
-        { "mod_dir": "tinkers-construct", "namespace": "tconstruct", "formats": ["json"] }
+        {
+          "mod_dir": "create",
+          "namespace": "create",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "mekanism",
+          "namespace": "mekanism",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "applied-energistics-2",
+          "namespace": "appliedenergistics2",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "botania",
+          "namespace": "botania",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "ars-nouveau",
+          "namespace": "ars_nouveau",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "tinkers-construct",
+          "namespace": "tconstruct",
+          "formats": [
+            "json"
+          ]
+        }
       ]
     },
-    "1.16.5": {
-      "i18n_version_dirs": ["1.16"],
-      "loaders": ["forge"],
+    "1.21": {
+      "i18n_version_dirs": [
+        "1.21",
+        "1.20",
+        "1.19",
+        "1.18",
+        "1.16"
+      ],
+      "loaders": [
+        "forge",
+        "neoforge",
+        "fabric"
+      ],
       "mods": [
-        { "mod_dir": "create", "namespace": "create", "formats": ["json"] },
-        { "mod_dir": "mekanism", "namespace": "mekanism", "formats": ["json"] },
-        { "mod_dir": "applied-energistics-2", "namespace": "appliedenergistics2", "formats": ["json"] },
-        { "mod_dir": "botania", "namespace": "botania", "formats": ["json"] },
-        { "mod_dir": "tinkers-construct", "namespace": "tconstruct", "formats": ["json"] }
+        {
+          "mod_dir": "create",
+          "namespace": "create",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "mekanism",
+          "namespace": "mekanism",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "applied-energistics-2",
+          "namespace": "appliedenergistics2",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "botania",
+          "namespace": "botania",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "ars-nouveau",
+          "namespace": "ars_nouveau",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "tinkers-construct",
+          "namespace": "tconstruct",
+          "formats": [
+            "json"
+          ]
+        }
+      ]
+    },
+    "26.1": {
+      "i18n_version_dirs": [
+        "26.1",
+        "1.21",
+        "1.20",
+        "1.19",
+        "1.18",
+        "1.16"
+      ],
+      "loaders": [
+        "forge",
+        "neoforge",
+        "fabric"
+      ],
+      "mods": [
+        {
+          "mod_dir": "create",
+          "namespace": "create",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "mekanism",
+          "namespace": "mekanism",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "applied-energistics-2",
+          "namespace": "appliedenergistics2",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "botania",
+          "namespace": "botania",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "ars-nouveau",
+          "namespace": "ars_nouveau",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "tinkers-construct",
+          "namespace": "tconstruct",
+          "formats": [
+            "json"
+          ]
+        }
+      ]
+    },
+    "26.2": {
+      "i18n_version_dirs": [
+        "26.2",
+        "26.1",
+        "1.21",
+        "1.20",
+        "1.19",
+        "1.18",
+        "1.16"
+      ],
+      "loaders": [
+        "forge",
+        "neoforge",
+        "fabric"
+      ],
+      "mods": [
+        {
+          "mod_dir": "create",
+          "namespace": "create",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "mekanism",
+          "namespace": "mekanism",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "applied-energistics-2",
+          "namespace": "appliedenergistics2",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "botania",
+          "namespace": "botania",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "ars-nouveau",
+          "namespace": "ars_nouveau",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "tinkers-construct",
+          "namespace": "tconstruct",
+          "formats": [
+            "json"
+          ]
+        }
+      ]
+    },
+    "26.3": {
+      "i18n_version_dirs": [
+        "26.3",
+        "26.2",
+        "26.1",
+        "1.21",
+        "1.20",
+        "1.19",
+        "1.18",
+        "1.16"
+      ],
+      "loaders": [
+        "forge",
+        "neoforge",
+        "fabric"
+      ],
+      "mods": [
+        {
+          "mod_dir": "create",
+          "namespace": "create",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "mekanism",
+          "namespace": "mekanism",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "applied-energistics-2",
+          "namespace": "appliedenergistics2",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "botania",
+          "namespace": "botania",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "ars-nouveau",
+          "namespace": "ars_nouveau",
+          "formats": [
+            "json"
+          ]
+        },
+        {
+          "mod_dir": "tinkers-construct",
+          "namespace": "tconstruct",
+          "formats": [
+            "json"
+          ]
+        }
       ]
     }
   },
