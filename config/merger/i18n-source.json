@@ -1,0 +1,15 @@
+{
+  "source": "CFPAOrg/Minecraft-Mod-Language-Package",
+  "type": "raw",
+  "branch": "main",
+  "base_url": "https://raw.githubusercontent.com/{repo}/{branch}/",
+  "fallback_urls": [
+    "https://ghproxy.net/https://raw.githubusercontent.com/{repo}/{branch}/",
+    "https://cdn.jsdelivr.net/gh/{repo}@{branch}/"
+  ],
+  "file_path_pattern": "projects/assets/{mod_dir}/{i18n_version_dir}/{namespace}/lang/{file}",
+  "extract_mode": "direct_fetch",
+  "request_timeout": 30,
+  "retry_count": 3,
+  "retry_delay": 5
+}

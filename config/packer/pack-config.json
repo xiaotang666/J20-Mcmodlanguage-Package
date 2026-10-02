@@ -1,0 +1,17 @@
+{
+  "description": "打包器配置：目标资源包矩阵与 pack_format 映射",
+  "repo": "xiaotang666/J20-Mcmodlanguage-Package",
+  "release_base_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download",
+  "packs": [
+    { "mc_version": "1.20.1", "loader": "forge", "pack_format": 15 },
+    { "mc_version": "1.20.1", "loader": "fabric", "pack_format": 15 },
+    { "mc_version": "1.16.5", "loader": "forge", "pack_format": 6 }
+  ],
+  "pack_format_table": {
+    "1.16.5": 6,
+    "1.18.2": 8,
+    "1.19.2": 9,
+    "1.20.1": 15
+  },
+  "version_format": "YYYY.MM.DD-NNN"
+}

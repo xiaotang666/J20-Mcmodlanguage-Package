@@ -1,0 +1,41 @@
+{
+  "generated_at": "2026-10-02T15:25:56Z",
+  "passed": true,
+  "checks": [
+    {
+      "check": "manifest_contract",
+      "passed": true,
+      "output": "[PASS] manifest 冻结契约检查通过"
+    },
+    {
+      "check": "pack_format",
+      "passed": true,
+      "output": "[PASS] pack_format 映射检查通过"
+    },
+    {
+      "check": "vp_structure",
+      "passed": true,
+      "output": "[PASS] VP 模块结构检查通过"
+    },
+    {
+      "check": "license_repo",
+      "passed": true,
+      "output": "[PASS] 协议合规检查通过"
+    },
+    {
+      "check": "assets",
+      "passed": true,
+      "output": "[PASS] 构建资产检查通过"
+    },
+    {
+      "check": "license_packs",
+      "passed": true,
+      "output": "[PASS] 协议合规检查通过"
+    },
+    {
+      "check": "verify_packs",
+      "passed": true,
+      "output": "[PASS] pack-1.16.5-forge.zip\n[PASS] pack-1.20.1-fabric.zip\n[PASS] pack-1.20.1-forge.zip"
+    }
+  ]
+}

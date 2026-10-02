@@ -1,0 +1,121 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'projects/**'
+      - 'vaultpatcher/**'
+      - 'j20-manifest/**'
+      - 'glossary/**'
+      - 'src/**'
+      - 'config/**'
+      - '.github/workflows/build.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 1. Lint 翻译（有错误即终止）
+      - name: Lint translations
+        run: python src/linter/run.py projects/ --json build/lint-report.json
+
+      # 2. 兼容性检查（冻结契约，不通过不发布）
+      - name: Compatibility check
+        run: |
+          python src/compatibility-checker/check_manifest.py manifest.json
+          python src/compatibility-checker/check_pack_format.py projects/
+          python src/compatibility-checker/check_vp_structure.py vaultpatcher/
+          python src/merger/check_license.py --repo
+
+      # 3. 按清单拉取 i18n 指定文件
+      - name: Fetch specified i18n files
+        run: |
+          python src/merger/fetch_i18n_files.py \
+            --manifest j20-manifest/file-selection.json \
+            --config config/merger/i18n-source.json \
+            --output build/i18n-extracted/
+
+      # 4. J20 自有翻译覆盖
+      - name: Overlay J20 translations
+        run: |
+          python src/merger/overlay_j20.py \
+            --source projects/ \
+            --target build/i18n-extracted/
+
+      # 5. 打包 VP 模块与最终资源包
+      - name: Build VP modules
+        run: python src/packer/build_vp.py --mc-version 1.20.1 --output build/
+
+      - name: Package final resource packs
+        run: python src/packer/build_final.py --lang-dir build/i18n-extracted/ --output build/
+
+      # 6. 校验产物与协议合规
+      - name: Verify final packs
+        run: python src/merger/verify.py build/pack-*.zip
+
+      - name: Protocol compliance check
+        run: python src/merger/check_license.py build/pack-*.zip
+
+      # 7. 生成 manifest 与兼容性报告
+      - name: Generate manifest
+        run: python src/packer/gen_manifest.py --build-dir build/
+
+      - name: Compatibility report
+        run: python src/compatibility-checker/run_all.py build/
+
+      # 8. 发布 Release（资产命名冻结：pack-{mc_version}-{loader}.zip / vp-modules-{mc_version}.zip）
+      - name: Resolve version
+        id: ver
+        run: echo "version=$(python -c "import json;print(json.load(open('manifest.json'))['latest']['version'])")" >> "$GITHUB_OUTPUT"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.version }}
+          name: J20-Mcmodlanguage-Package ${{ steps.ver.outputs.version }}
+          body: |
+            ## J20-Mcmodlanguage-Package 更新
+            - 版本：${{ steps.ver.outputs.version }}
+            - 类型：常规翻译更新
+            - 是否影响 j20UpdateMod：否
+
+            ### 协议声明
+            本资源包基于 CFPAOrg i18n 库改编，遵循 CC BY-NC-SA 4.0 协议。
+            禁止商业用途。原始协议见包内 LICENSE-i18n。
+
+            ### 兼容性提示
+            - [x] manifest 结构未变
+            - [x] Release 资产命名未变
+            - [x] 资源包内部结构未变
+            - [x] VP 包内部结构未变
+            - [x] LICENSE-i18n 已保留
+            - [x] pack.mcmeta 含署名
+
+            ### 破坏性变更说明
+            无。
+          files: |
+            build/pack-*.zip
+            build/vp-modules-*.zip
+            manifest.json
+            compatibility-report.json
+            ATTRIBUTION.md
+
+      # 9. 回写 manifest.json 到仓库（供 j20UpdateMod 从 raw 读取）
+      - name: Commit manifest
+        run: |
+          git config user.name "j20-ci"
+          git config user.email "j20-ci@users.noreply.github.com"
+          git add manifest.json compatibility-report.json
+          git diff --cached --quiet || git commit -m "ci: update manifest ${{ steps.ver.outputs.version }}"
+          git push

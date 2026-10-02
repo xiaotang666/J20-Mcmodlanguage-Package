@@ -1,0 +1,38 @@
+name: Compatibility Check
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  compat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Lint translations
+        run: python src/linter/run.py projects/ --json build/lint-report.json
+
+      - name: Manifest contract
+        run: python src/compatibility-checker/check_manifest.py manifest.json
+
+      - name: Pack format mapping
+        run: python src/compatibility-checker/check_pack_format.py projects/
+
+      - name: VP structure
+        run: python src/compatibility-checker/check_vp_structure.py vaultpatcher/
+
+      - name: License files
+        run: python src/merger/check_license.py --repo
+
+      - name: TMX validation
+        run: python src/tm-manager/validate_tmx.py tm/
+
+      - name: Full compatibility report
+        run: python src/compatibility-checker/run_all.py

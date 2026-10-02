@@ -1,0 +1,7 @@
+# 构建产物不入库（由 CI 构建后上传 GitHub Release）
+build/
+__pycache__/
+*.pyc
+.omegat/
+omegat-project/
+*.tmp
