@@ -1,0 +1,45 @@
+name: Daily i18n Update Check
+
+on:
+  schedule:
+    # 北京时间每日 00:00（GitHub cron 为 UTC，UTC 16:00 = 北京 00:00）
+    - cron: '0 16 * * *'
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Check i18n updates
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.compare.outputs.changed }}
+      sha: ${{ steps.compare.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compare i18n HEAD with last build
+        id: compare
+        run: |
+          SHA=$(git ls-remote https://github.com/CFPAOrg/Minecraft-Mod-Language-Package.git refs/heads/main | cut -f1)
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          OLD=""
+          if [ -f config/merger/i18n-state.json ]; then
+            OLD=$(python -c "import json;print(json.load(open('config/merger/i18n-state.json')).get('i18n_head_sha',''))")
+          fi
+          echo "i18n HEAD: $SHA"
+          echo "上次构建: ${OLD:-（无记录）}"
+          if [ "$SHA" = "$OLD" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "i18n 库无更新，跳过打包"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "i18n 库有更新，触发打包"
+          fi
+
+  build:
+    name: Rebuild and release
+    needs: check
+    if: needs.check.outputs.changed == 'true'
+    uses: ./.github/workflows/build.yml
+    permissions:
+      contents: write
+    secrets: inherit

@@ -12,6 +12,7 @@ on:
       - 'config/**'
       - '.github/workflows/build.yml'
   workflow_dispatch:
+  workflow_call:
 
 jobs:
   build:
@@ -37,6 +38,13 @@ jobs:
           python src/compatibility-checker/check_pack_format.py projects/
           python src/compatibility-checker/check_vp_structure.py vaultpatcher/
           python src/merger/check_license.py --repo
+
+      # 2.5 记录本次构建依据的 i18n HEAD（供 daily-check.yml 每日对比）
+      - name: Record i18n state
+        run: |
+          SHA=$(git ls-remote https://github.com/CFPAOrg/Minecraft-Mod-Language-Package.git refs/heads/main | cut -f1)
+          printf '{\n  "i18n_head_sha": "%s",\n  "branch": "main"\n}\n' "$SHA" > config/merger/i18n-state.json
+          echo "i18n HEAD recorded: $SHA"
 
       # 3. 按清单拉取 i18n 指定文件（按版本组 × 内容组分树）
       - name: Fetch specified i18n files
@@ -117,6 +125,6 @@ jobs:
         run: |
           git config user.name "j20-ci"
           git config user.email "j20-ci@users.noreply.github.com"
-          git add manifest.json compatibility-report.json
+          git add manifest.json compatibility-report.json config/merger/i18n-state.json
           git diff --cached --quiet || git commit -m "ci: update manifest ${{ steps.ver.outputs.version }}"
           git push

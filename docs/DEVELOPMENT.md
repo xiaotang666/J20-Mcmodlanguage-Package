@@ -87,7 +87,8 @@ python src/linter/run.py projects/ --json build/lint-report.json
 
 | 工作流 | 触发 | 作用 |
 | --- | --- | --- |
-| `build.yml` | main 推送（翻译/配置/脚本变更） | Lint → 兼容性检查 → 拉取 → 覆盖 → 打包 → 校验 → 发布 Release → 回写 manifest |
+| `build.yml` | main 推送（翻译/配置/脚本变更）/ daily-check 调用 / 手动 | Lint → 兼容性检查 → 记录 i18n HEAD → 拉取 → 覆盖 → 打包 → 校验 → 发布 Release → 回写 manifest |
+| `daily-check.yml` | 每日 00:00（北京时间，UTC 16:00）/ 手动 | 对比 i18n `main` HEAD SHA 与 `config/merger/i18n-state.json` 记录：有更新才触发 `build.yml` 重新打包，无更新直接跳过 |
 | `compatibility-check.yml` | PR | Lint + 全部冻结契约检查 + TMX 校验 |
 | `sync-mirror.yml` | build 成功后 / 每日定时 | 先资产后 manifest 同步镜像（渠道待接入，见 TODO） |
 
