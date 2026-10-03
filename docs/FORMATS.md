@@ -44,7 +44,12 @@ projects/<mc_version>/assets/<namespace>/lang/en_us.json   # 源文件（对照�
 - `pairs` 的键必须与代码中的硬编码字符串**完全一致**（含空格、格式码）；
 - 建议追加 `_meta`（`mod_version` / `mc_version` / `last_verified`）标记补丁对应模组版本，模组更新后重新反编译核对；
 - 打包为 `vp-modules-{mc_version}.zip`（命名冻结），内部路径必须是 `vaultpatcher/modules/*.json`；
+- **此包不是资源包**：Vault Patcher 模组只从文件夹加载模块——新版读游戏根目录下 `vaultpatcher/modules/`（旧版为 `config/vaultpatcher_asm/`，VP 会自动迁移），**不读 resourcepacks**。j20UpdateMod 下载后须把包内 `vaultpatcher/modules/` 解压到游戏根目录 `.minecraft/`（使 `.minecraft/vaultpatcher/modules/` 就位），直接丢进 `resourcepacks/` 不会生效；VP 的 `config.json` 的 `mods` 列表需包含对应模块名（或开启 `load_all_modules`）；
 - 条目仅放真实补丁文件，示例模板不入库。
+
+## 资源包固定内容
+
+- `pack.png` — 资源包图标（打包器自动从 `branding/pack.png` 置入包根，游戏内资源包列表显示）；重新生成用 `branding/gen_pack_logo.ps1`。
 
 ## glossary/ — 三级术语库
 

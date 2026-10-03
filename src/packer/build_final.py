@@ -67,6 +67,9 @@ def build_one(lang_dir: Path, modules_dir: Path, out_path: Path,
             src = REPO_ROOT / name
             if src.exists():
                 zf.write(src, arc)
+        logo = REPO_ROOT / "branding" / "pack.png"
+        if logo.exists():
+            zf.write(logo, "pack.png")
     fmt_desc = ", ".join(f"{k}={mcmeta['pack'][k]}" for k in
                          ("pack_format", "supported_formats", "min_format", "max_format")
                          if k in mcmeta["pack"])

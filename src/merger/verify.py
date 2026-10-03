@@ -17,7 +17,7 @@ import sys
 import zipfile
 from pathlib import Path
 
-REQUIRED = ("LICENSE-i18n", "LICENSE-j20", "ATTRIBUTION.md")
+REQUIRED = ("pack.png", "LICENSE-i18n", "LICENSE-j20", "ATTRIBUTION.md")
 
 
 def _fmt_value_ok(v) -> bool:
