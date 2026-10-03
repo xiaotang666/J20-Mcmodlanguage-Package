@@ -1,4 +1,6 @@
 ﻿# J20-Mcmodlanguage-Package 资源包图标生成脚本
+# 设计语言：平面印刷海报（色块分割 + 反转套色字形），零渐变/零发光/零投影/零装饰点
+# 配色：油墨黑 + 米白 + 朱红（单一强调色）
 # 输出：branding/pack.png（256x256，Minecraft 资源包图标）
 # 用法：powershell -NoProfile -ExecutionPolicy Bypass -File branding/gen_pack_logo.ps1
 Add-Type -AssemblyName System.Drawing
@@ -9,73 +11,61 @@ $g = [System.Drawing.Graphics]::FromImage($bmp)
 $g.SmoothingMode = 'AntiAlias'
 $g.TextRenderingHint = 'AntiAlias'
 
-# ---------- 背景：深海军蓝 -> 亮天蓝 对角渐变 ----------
-$rect = New-Object System.Drawing.Rectangle 0, 0, $W, $W
-$bg = New-Object System.Drawing.Drawing2D.LinearGradientBrush $rect,
-    ([System.Drawing.Color]::FromArgb(255, 6, 26, 60)),
-    ([System.Drawing.Color]::FromArgb(255, 34, 118, 232)), 45
-$g.FillRectangle($bg, $rect)
+# ---------- 色板 ----------
+$ink   = [System.Drawing.Color]::FromArgb(255, 23, 26, 31)      # 油墨黑（非纯黑）
+$paper = [System.Drawing.Color]::FromArgb(255, 242, 239, 232)   # 米白
+$verm  = [System.Drawing.Color]::FromArgb(255, 226, 67, 44)     # 朱红（唯一强调色）
+$SPLIT = 152                                                     # 色场交界 x（J2 / 0 之间）
 
-# ---------- 装饰：右上两道斜向光带（低透明度） ----------
-$streak = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(20, 255, 255, 255))
-$g.FillPolygon($streak, @(
-    (New-Object System.Drawing.Point 176, 0), (New-Object System.Drawing.Point 256, 0),
-    (New-Object System.Drawing.Point 256, 74), (New-Object System.Drawing.Point 202, 0)))
-$g.FillPolygon($streak, @(
-    (New-Object System.Drawing.Point 226, 0), (New-Object System.Drawing.Point 256, 0),
-    (New-Object System.Drawing.Point 256, 28), (New-Object System.Drawing.Point 240, 0)))
-# 左下呼应的小光带
-$g.FillPolygon($streak, @(
-    (New-Object System.Drawing.Point 0, 210), (New-Object System.Drawing.Point 52, 256),
-    (New-Object System.Drawing.Point 0, 256)))
+# ---------- 色场：满幅油墨黑 + 左侧米白块（不对称分割） ----------
+$g.Clear($ink)
+$g.FillRectangle([System.Drawing.SolidBrush]::new($paper), 0, 0, $SPLIT, $W)
 
-# ---------- 装饰：底部三粒渐次的冰蓝像素点 ----------
-foreach ($p in @(@(64, 224, 8, 120), @(124, 224, 8, 180), @(184, 224, 8, 235))) {
-    $b = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb($p[3], 111, 195, 255))
-    $g.FillRectangle($b, $p[0], $p[1], $p[2], $p[2])
-}
-
-# ---------- 细圆角内描边 ----------
-function Get-RoundedRect([float]$x, [float]$y, [float]$w, [float]$h, [float]$r) {
-    $gp = New-Object System.Drawing.Drawing2D.GraphicsPath
-    $gp.AddArc($x, $y, 2 * $r, 2 * $r, 180, 90)
-    $gp.AddArc($x + $w - 2 * $r, $y, 2 * $r, 2 * $r, 270, 90)
-    $gp.AddArc($x + $w - 2 * $r, $y + $h - 2 * $r, 2 * $r, 2 * $r, 0, 90)
-    $gp.AddArc($x, $y + $h - 2 * $r, 2 * $r, 2 * $r, 90, 90)
-    $gp.CloseFigure()
-    return $gp
-}
-$borderPen = New-Object System.Drawing.Pen ([System.Drawing.Color]::FromArgb(90, 255, 255, 255)), 2.5
-$g.DrawPath($borderPen, (Get-RoundedRect 13 13 230 230 18))
+# ---------- 底部朱红基线条（通栏，压住版面） ----------
+$g.FillRectangle([System.Drawing.SolidBrush]::new($verm), 0, 242, $W, 10)
 
 $sf = New-Object System.Drawing.StringFormat
 $sf.Alignment = 'Center'
 $sf.LineAlignment = 'Center'
+$sf.FormatFlags = [System.Drawing.StringFormatFlags]::NoWrap
 
-# ---------- 标题 J20（投影 + 主体） ----------
+# ---------- 主字 J20：逐字固定定位（绕开 GDI+ 文本测量误差），字色跨界反转 ----------
+# J(ink) 2(ink) | 0(paper) —— 交界落在 2 与 0 之间，反转一目了然
+$fontJ = [System.Drawing.Font]::new('Arial Black', [float]60, [System.Drawing.FontStyle]::Regular)
+$chars = @(@('J', 22), @('2', 88), @('0', 154))
+
+$g.SetClip([System.Drawing.Rectangle]::new(0, 0, $SPLIT, $W))
+foreach ($c in $chars) {
+    $r = New-Object System.Drawing.RectangleF $c[1], 40, 62, 116
+    $g.DrawString($c[0], $fontJ, ([System.Drawing.SolidBrush]::new($ink)), $r, $sf)
+}
+$g.SetClip([System.Drawing.Rectangle]::new($SPLIT, 0, ($W - $SPLIT), $W))
+foreach ($c in $chars) {
+    $r = New-Object System.Drawing.RectangleF $c[1], 40, 62, 116
+    $g.DrawString($c[0], $fontJ, ([System.Drawing.SolidBrush]::new($paper)), $r, $sf)
+}
+$g.ResetClip()
+
+# ---------- 副名 汉化资源包：跨越交界反转（"包"字被交界切开换色） ----------
 $family = New-Object System.Drawing.FontFamily 'Microsoft YaHei UI'
-$font1 = [System.Drawing.Font]::new($family, [float]74, [System.Drawing.FontStyle]::Bold)
-$shadow = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(95, 0, 12, 36))
-$r1s = New-Object System.Drawing.RectangleF 3, 34, $W, 104
-$g.DrawString('J20', $font1, $shadow, $r1s, $sf)
-$r1 = New-Object System.Drawing.RectangleF 0, 30, $W, 104
-$g.DrawString('J20', $font1, ([System.Drawing.Brushes]::White), $r1, $sf)
+$fontC = [System.Drawing.Font]::new($family, [float]22, [System.Drawing.FontStyle]::Bold)
+$rC = New-Object System.Drawing.RectangleF 16, 184, 176, 40
 
-# ---------- 标题下冰蓝分隔线 ----------
-$lineBrush = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(235, 111, 195, 255))
-$g.FillRectangle($lineBrush, 88, 136, 80, 3)
+$g.SetClip([System.Drawing.Rectangle]::new(0, 0, $SPLIT, $W))
+$g.DrawString('汉化资源包', $fontC, ([System.Drawing.SolidBrush]::new($ink)), $rC, $sf)
+$g.SetClip([System.Drawing.Rectangle]::new($SPLIT, 0, ($W - $SPLIT), $W))
+$g.DrawString('汉化资源包', $fontC, ([System.Drawing.SolidBrush]::new($paper)), $rC, $sf)
+$g.ResetClip()
 
-# ---------- 副标题 ----------
-$font2 = [System.Drawing.Font]::new($family, [float]28, [System.Drawing.FontStyle]::Bold)
-$brush2 = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(255, 227, 242, 255))
-$r2 = New-Object System.Drawing.RectangleF 0, 150, $W, 50
-$g.DrawString('汉化资源包', $font2, $brush2, $r2, $sf)
-
-# ---------- 底部小字 ----------
-$font3 = [System.Drawing.Font]::new($family, [float]12, [System.Drawing.FontStyle]::Regular)
-$brush3 = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(255, 168, 205, 245))
-$r3 = New-Object System.Drawing.RectangleF 0, 198, $W, 30
-$g.DrawString('i18n  ×  Vault Patcher', $font3, $brush3, $r3, $sf)
+# ---------- 右下小字：完全落在油墨色场内，右对齐 ----------
+$fontS = [System.Drawing.Font]::new('Consolas', [float]7, [System.Drawing.FontStyle]::Regular)
+$sfR = New-Object System.Drawing.StringFormat
+$sfR.Alignment = 'Far'
+$sfR.LineAlignment = 'Center'
+$sfR.FormatFlags = [System.Drawing.StringFormatFlags]::NoWrap
+$brushS = New-Object System.Drawing.SolidBrush ([System.Drawing.Color]::FromArgb(255, 139, 141, 145))
+$rS = New-Object System.Drawing.RectangleF 176, 184, 72, 40
+$g.DrawString('Vault Patcher', $fontS, $brushS, $rS, $sfR)
 
 $out = Join-Path $PSScriptRoot 'pack.png'
 $bmp.Save($out, [System.Drawing.Imaging.ImageFormat]::Png)
