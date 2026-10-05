@@ -3,8 +3,8 @@
 用法：
     python src/packer/gen_manifest.py --build-dir build/ [--version 2026.10.02-001]
 
-版本号格式固定 YYYY.MM.DD-NNN（冻结契约）；不传 --version 时按当天日期 + 当日构建序号自动生成
-（序号取自现有 manifest.json 的同日版本 +1，从 001 起）。
+版本号格式固定 YYYY.MM.DD-NNN（冻结契约）；不传 --version 时自动生成：日期为发布日（UTC），
+NNN 为全局发布序号（取自现有 manifest.json 的序号 +1，自 001 起，不随日期重置）。
 
 冻结字段（禁止删除/改名/改含义）：
     schema_version, latest.version, latest.packages,
@@ -26,13 +26,14 @@ VERSION_RE = re.compile(r"^\d{4}\.\d{2}\.\d{2}-\d{3}$")
 
 
 def next_version(existing: dict | None) -> str:
+    """日期 = 发布日（UTC）；NNN = 全局发布序号（每次 +1，不随日期重置）。"""
     today = dt.datetime.now(dt.timezone.utc).strftime("%Y.%m.%d")
     seq = 1
     if existing:
         cur = existing.get("latest", {}).get("version", "")
-        m = re.match(r"^(\d{4}\.\d{2}\.\d{2})-(\d{3})$", cur)
-        if m and m.group(1) == today:
-            seq = int(m.group(2)) + 1
+        m = re.match(r"^\d{4}\.\d{2}\.\d{2}-(\d{3})$", cur)
+        if m:
+            seq = int(m.group(1)) + 1
     return f"{today}-{seq:03d}"
 
 

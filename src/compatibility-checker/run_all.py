@@ -30,6 +30,8 @@ def main() -> int:
                        + [str(z) for z in sorted(build_dir.glob("pack-*.zip"))]))
         checks.append(("verify_packs", [sys.executable, "src/merger/verify.py"]
                        + [str(z) for z in sorted(build_dir.glob("pack-*.zip"))]))
+        checks.append(("vp_zips", [sys.executable, "src/compatibility-checker/check_vp_zip.py"]
+                       + [str(z) for z in sorted(build_dir.glob("vp-modules-*.zip"))]))
 
     results = []
     all_ok = True

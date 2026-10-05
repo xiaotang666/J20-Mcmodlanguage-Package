@@ -3,6 +3,19 @@
 本项目自身版本号从 0.0.1 起递增（语义化迭代：Bug 修复 +0.0.1，重大功能 +0.1.0，架构变更 +1.0.0）。
 Release 发布版本号另按对外接口冻结格式 `YYYY.MM.DD-NNN` 自动生成，两者独立。
 
+## 0.2.4 — 2026-10-05
+
+### 修正
+- FORMATS.md 补全 Vault Patcher config.json 权威结构（实证自 VP 源码）：字段为 **`modules`**（非 `mods`）、路径固定 `config/vaultpatcher_asm/config.json`（不随模块迁移）、`load_all_modules` 等完整字段样例
+- Release 版本 NNN 语义统一为**全局发布序号**（自 001 起每次发布 +1，不随日期重置），脚本与 README/DEVELOPMENT/FORMATS 口径一致
+
+### 新增
+- `src/packer/verify_release.py` 发布冒烟校验：CI 发布 Release 后逐资产下载 `release_url` 核对 md5/size，不通过即阻断 manifest 回写
+- 仓库根 `sources.example.json` 下载渠道权威清单（j20UpdateMod 内置 sources.json 对齐模板）
+- VP 包 zip 结构校验进 CI（`check_vp_zip.py`：仅 `vaultpatcher/modules/*.json` 一层、禁路径穿越）
+- VP 模块 `_meta.last_verified` 入库强制（缺失拒绝打包入库）
+- 文档补充 Release 清理策略（保留历史 manifest 引用资产）与本地构建产物禁提交规则
+
 ## 0.2.3 — 2026-10-04
 
 ### 变更

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "description": "下载渠道权威清单（j20UpdateMod 内置 sources.json 以此为准同步）",
+  "policy": "先资产后 manifest 下载；镜像资产必须与 GitHub Release 字节一致（按 manifest 内 md5 校验），不一致即弃用该镜像",
+  "manifest_url": "https://raw.githubusercontent.com/xiaotang666/J20-Mcmodlanguage-Package/main/manifest.json",
+  "manifest_mirrors": [
+    "https://raw.githubusercontent.com/xiaotang666/J20-Mcmodlanguage-Package/main/manifest.json",
+    "https://ghproxy.net/https://raw.githubusercontent.com/xiaotang666/J20-Mcmodlanguage-Package/main/manifest.json",
+    "https://cdn.jsdelivr.net/gh/xiaotang666/J20-Mcmodlanguage-Package@main/manifest.json"
+  ],
+  "asset_url_pattern": "{channel.base_url}/{YYYY.MM.DD-NNN}/{asset_name}",
+  "channels": [
+    {
+      "name": "github",
+      "base_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download",
+      "priority": 0
+    },
+    {
+      "name": "ghproxy",
+      "base_url": "https://ghproxy.net/https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download",
+      "priority": 1
+    }
+  ],
+  "notes": [
+    "jsdelivr 只能镜像 manifest.json 等仓库内文件，不能镜像 Release 资产，故不列入 channels",
+    "新增镜像渠道时先同步本文件，再更新模组内置 sources.json，两侧保持一致",
+    "Release 资产清理必须保留历史 manifest 引用过的资产（模组离线回退用缓存 manifest）"
+  ]
+}

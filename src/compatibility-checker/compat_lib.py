@@ -103,8 +103,13 @@ def check_vp_zip_structure(path: Path) -> list[str]:
     errors = []
     with zipfile.ZipFile(path) as zf:
         for n in zf.namelist():
-            if not (n.startswith("vaultpatcher/modules/") and n.endswith(".json")):
-                errors.append(f"{path.name}: VP 包内非法路径 {n}")
+            parts = n.replace("\\", "/").split("/")
+            if n.startswith("/") or "\\" in n or ".." in parts or (len(parts) > 1 and ":" in parts[0]):
+                errors.append(f"{path.name}: VP 包含路径穿越/绝对路径 {n}")
+                continue
+            tail = n[len("vaultpatcher/modules/"):] if n.startswith("vaultpatcher/modules/") else None
+            if tail is None or not tail.endswith(".json") or "/" in tail or tail == ".json":
+                errors.append(f"{path.name}: VP 包内非法路径 {n}（只允许 vaultpatcher/modules/<模块名>.json 一层）")
     return errors
 
 
@@ -173,6 +178,9 @@ def check_vp_modules(vaultpatcher_dir: Path) -> list[str]:
         for field in ("name", "authors", "mods"):
             if field not in head:
                 errors.append(f"{m.name}: 模块头缺少字段 {field}")
+        meta = head.get("_meta") if isinstance(head, dict) else None
+        if not isinstance(meta, dict) or not meta.get("last_verified"):
+            errors.append(f"{m.name}: 缺少 _meta.last_verified（入库强制：最近一次反编译核对日期）")
         if len(data) < 2 or "target_classes" not in data[1] or "pairs" not in data[1]:
             errors.append(f"{m.name}: 缺少 target_classes/pairs 补丁体")
     return errors

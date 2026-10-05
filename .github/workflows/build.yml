@@ -120,6 +120,10 @@ jobs:
             compatibility-report.json
             ATTRIBUTION.md
 
+      # 8.5 发布冒烟校验：逐资产下载 release_url 核对 md5/size（防止回写指向未发布资产的 manifest）
+      - name: Smoke verify release assets
+        run: python src/packer/verify_release.py --manifest manifest.json
+
       # 9. 回写 manifest.json 到仓库（供 j20UpdateMod 从 raw 读取）
       - name: Commit manifest
         run: |

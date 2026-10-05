@@ -36,6 +36,8 @@ python src/compatibility-checker/run_all.py build/
 
 产物（命名冻结，禁止更改）：`build/pack-{版本组}-{loader}.zip`、`build/vp-modules-{版本组}.zip`。
 
+> **注意**：本地构建产出的 `manifest.json` / `compatibility-report.json` **禁止提交**（详见文末"接口冻结红线"）。
+
 ## 版本组规则（对齐 i18n 大版本分组）
 
 `mc_version` = 版本号**前两段**（`1.20.1`→`1.20`，`1.21.11`→`1.21`，`26.1.2`→`26.1`）；组内小版本共用同一资源包。当前覆盖 **1.20 / 1.21 / 26.1 / 26.2 / 26.3**（即 1.20.1 及以上的所有 MC 正式版）。
@@ -60,7 +62,8 @@ python src/compatibility-checker/run_all.py build/
 | `src/merger/check_license.py` | 协议合规检查（包内/仓库，含防背书表述检查） |
 | `src/packer/build_vp.py` | 打包 VP 模块为 `vp-modules-{mc_version}.zip` |
 | `src/packer/build_final.py` | 打包最终资源包（含 pack.mcmeta 署名） |
-| `src/packer/gen_manifest.py` | 生成 manifest.json（版本 `YYYY.MM.DD-NNN` 自动递增） |
+| `src/packer/gen_manifest.py` | 生成 manifest.json（版本 `YYYY.MM.DD-NNN`：日期 + 全局发布序号） |
+| `src/packer/verify_release.py` | 发布冒烟校验（逐资产下载 release_url 核对 md5/size） |
 | `src/linter/run.py` | 翻译质量 Linter（错误阻断构建） |
 | `src/compatibility-checker/*` | 冻结契约检查（manifest/资产/pack_format/VP/协议） |
 | `src/ai-translate/*` | 待审核工作流（见 docs/REVIEW-WORKFLOW.md） |
@@ -81,16 +84,16 @@ python src/linter/run.py projects/ --json build/lint-report.json
 ## 版本号管理（两套，勿混淆）
 
 1. **项目版本**：从 `0.0.1` 起语义化递增（Bug 修复 +0.0.1 / 重大功能 +0.1.0 / 架构变更 +1.0.0），记录于 `CHANGELOG.md`；
-2. **Release 发布版本**：`YYYY.MM.DD-NNN`（对外接口冻结格式），由 `gen_manifest.py` 自动生成，NNN 为当日构建序号。
+2. **Release 发布版本**：`YYYY.MM.DD-NNN`（对外接口冻结格式），由 `gen_manifest.py` 自动生成：日期为发布日（UTC），**NNN 为全局发布序号**——自 001 起每次发布 +1，不随日期重置。
 
 ## CI 工作流
 
 | 工作流 | 触发 | 作用 |
 | --- | --- | --- |
-| `build.yml` | main 推送（翻译/配置/脚本变更）/ daily-check 调用 / 手动 | Lint → 兼容性检查 → 记录 i18n HEAD → 拉取 → 覆盖 → 打包 → 校验 → 发布 Release → 回写 manifest |
+| `build.yml` | main 推送（翻译/配置/脚本变更）/ daily-check 调用 / 手动 | Lint → 兼容性检查 → 记录 i18n HEAD → 拉取 → 覆盖 → 打包 → 校验 → 发布 Release → **发布冒烟校验（逐资产下载核对 md5）** → 回写 manifest |
 | `daily-check.yml` | 每日 00:00（北京时间，UTC 16:00）/ 手动 | 对比 i18n `main` HEAD SHA 与 `config/merger/i18n-state.json` 记录：有更新才触发 `build.yml` 重新打包，无更新直接跳过 |
 | `compatibility-check.yml` | PR | Lint + 全部冻结契约检查 + TMX 校验 |
-| `sync-mirror.yml` | build 成功后 / 每日定时 | 先资产后 manifest 同步镜像（渠道待接入，见 TODO） |
+| `sync-mirror.yml` | build 成功后 / 每日定时 | 先资产后 manifest 同步镜像（渠道待接入，权威渠道清单见仓库根 `sources.example.json`） |
 
 ## 接口冻结红线（改前必读）
 
@@ -99,7 +102,9 @@ python src/linter/run.py projects/ --json build/lint-report.json
 - 资源包内部结构 `pack.mcmeta + assets/<ns>/lang/zh_cn.*`
 - VP 包内部结构 `vaultpatcher/modules/*.json`
 
-只增不删；破坏性变更必须发版通知 j20UpdateMod，并保留旧资产（最近 10 个 Release 不删）。
+只增不删；破坏性变更必须发版通知 j20UpdateMod（最近 10 个 Release 不删）。**Release 清理策略**：清理更旧版本时，历史 `manifest.json` 曾引用过的资产必须全部保留（j20UpdateMod 离线回退使用缓存 manifest 指向旧资产），仅可删除从未被任何 manifest 引用的资产。
+
+**本地构建产物禁提交**：`manifest.json` / `compatibility-report.json` 由 CI 发布后回写，本地手动跑 packer 生成的版本号对应并不存在的 Release，提交会使 manifest 指向 404 资产。本地测试后请 `git checkout -- manifest.json compatibility-report.json` 还原。CI 侧由发布冒烟校验（`verify_release.py`）兜底：任一 `release_url` 不可下载或 md5/size 不符即阻断回写。
 
 ## 调整拉取清单
 
