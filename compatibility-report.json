@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-03T18:39:11Z",
+  "generated_at": "2026-10-05T15:59:15Z",
   "passed": true,
   "checks": [
     {
@@ -36,6 +36,11 @@
       "check": "verify_packs",
       "passed": true,
       "output": "[PASS] pack-1.20-fabric.zip\n[PASS] pack-1.20-forge.zip\n[PASS] pack-1.20-neoforge.zip\n[PASS] pack-1.21-fabric.zip\n[PASS] pack-1.21-forge.zip\n[PASS] pack-1.21-neoforge.zip\n[PASS] pack-26.1-fabric.zip\n[PASS] pack-26.1-forge.zip\n[PASS] pack-26.1-neoforge.zip\n[PASS] pack-26.2-fabric.zip\n[PASS] pack-26.2-forge.zip\n[PASS] pack-26.2-neoforge.zip\n[PASS] pack-26.3-fabric.zip\n[PASS] pack-26.3-forge.zip\n[PASS] pack-26.3-neoforge.zip"
+    },
+    {
+      "check": "vp_zips",
+      "passed": true,
+      "output": "[PASS] 5 个 VP 包结构合规"
     }
   ]
 }
