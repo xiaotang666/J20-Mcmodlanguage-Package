@@ -35,7 +35,7 @@
 
 ## 参与贡献
 
-欢迎参与翻译与校对！贡献流程、翻译质量红线见 [CONTRIBUTING.md](CONTRIBUTING.md)，翻译规范见 [style-guide/README.md](style-guide/README.md)。
+欢迎参与翻译与校对！**怎么汉化、文件放哪、命名规范**见 [CONTRIBUTING.md](CONTRIBUTING.md)（三步速查 + 命名规范速查表 + 完整示例），翻译规范见 [style-guide/README.md](style-guide/README.md)。
 
 开发构建、工具脚本与内部格式说明见 [docs/](docs/)（面向维护者，普通用户无需关注）。
 
