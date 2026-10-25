@@ -108,6 +108,40 @@ AI 辅助：否
 
 通用术语进 `glossary/mods.json`，原版译名进 `glossary/vanilla.json`（新增条目追加到数组末尾即可）。
 
+### 2.5 例 5：一个 jar 里有多个 lang 目录（真实案例）
+
+以 Slate Menu 套件（`slate-menu-neoforge-1.21.1-1.1.0.jar`）为例：这**一个 jar 里有 7 个命名空间**，每个都有自己的 `lang/en_us.json`：
+
+```
+assets/slate_creative/lang/en_us.json    (367 B)
+assets/slate_infohud/lang/en_us.json     (8.7 KB)
+assets/slate_lookat/lang/en_us.json      (4.0 KB)
+assets/slate_map3d/lang/en_us.json       (5.7 KB)
+assets/slate_menu/lang/en_us.json        (18 KB)
+assets/slate_overhaul/lang/en_us.json    (4.4 KB)
+assets/slate_stats/lang/en_us.json       (9.8 KB)
+```
+
+**规则：有几个含 `lang` 的命名空间，就翻几套、放几套，各归各的目录。** 此 jar 是 neoforge 1.21.1 → 版本组 `1.21`，汉化后这样放：
+
+```
+projects/1.21/assets/slate_creative/lang/zh_cn.json
+projects/1.21/assets/slate_infohud/lang/zh_cn.json
+projects/1.21/assets/slate_lookat/lang/zh_cn.json
+projects/1.21/assets/slate_map3d/lang/zh_cn.json
+projects/1.21/assets/slate_menu/lang/zh_cn.json
+projects/1.21/assets/slate_overhaul/lang/zh_cn.json
+projects/1.21/assets/slate_stats/lang/zh_cn.json
+```
+
+要点：
+
+- **一个 jar 多命名空间 ≠ 多个模组**：同属一个套件，**一次 PR 全带上**即可（PR 描述里列出涉及的命名空间清单）；
+- 各命名空间的词条**互不通用**：别把 `slate_menu` 的词条抄进 `slate_stats`，键都是独立的；
+- lang 目录里若已有 `zh_cn.json`（部分已翻）→ 在它基础上补全/纠错即可；**只处理 `en_us.json` → `zh_cn.json`**，其他语言文件（`de_de.json` 等）不用管也不用翻；
+- jar 里的 `assets/minecraft/` 这类原版命名空间（贴图/模型）**不属于翻译范围**，只处理带 `lang/en_us.json` 的命名空间；
+- 一个 mod 同时有 forge/fabric/neoforge 多个 jar？**内容以其中一个为准翻一次**（语言文件通常一致），放到对应版本组目录即可，不需要每个 jar 翻一遍。
+
 ## 3. 怎么汉化（翻译怎么做）
 
 ### 3.1 拿到原文
@@ -139,7 +173,7 @@ projects/<版本组>/assets/<命名空间>/lang/zh_cn.json   ← 必交：中文
 projects/<版本组>/assets/<命名空间>/lang/en_us.json   ← 建议附：英文原文（对照用，不打包）
 ```
 
-完整示例见 [第 2 节](#2-完整实例跟着做一遍create-120)。
+完整示例见 [第 2 节](#2-完整实例跟着做一遍create-120)；**一个 jar 里有多个命名空间（好几个 lang）时的放法见 [2.5 真实案例](#25-例-5一个-jar-里有多个-lang-目录真实案例)**。
 
 ### 4.2 命名规范速查表
 
@@ -167,6 +201,7 @@ projects/<版本组>/assets/<命名空间>/lang/en_us.json   ← 建议附：英
 
 - **版本组 = MC 版本号前两段**：同组小版本共用同一份翻译（1.20.1 和 1.20.2 都放 `projects/1.20/`）；一个 mod 同时支持多个版本组时，**每个版本组目录各放一份**（内容可以相同）；
 - **命名空间 ≠ 模组文件名**：以 mod jar 内 `assets/` 下的目录名为准（拿不准就看 jar 里语言文件的实际路径，或游戏内物品 ID 的前缀）。常见坑：`applied-energistics-2` 的命名空间是 `appliedenergistics2`，`Mekanism` 是 `mekanism`（全小写）；
+- **一个 jar 可以有多个命名空间**（套件类模组常见，如 Slate Menu 一个 jar 七个命名空间）：有几个含 `lang` 的命名空间就翻几套、放几套，各归各的目录（真实案例见 2.5）；
 - **文件格式**：UTF-8 编码（无 BOM）、标准 JSON——一个扁平对象，`"键": "值"` 逐行排列；**只翻译值，键名一个字符都不能改**；同一文件禁止重复键。
 
 ### 4.4 硬编码补丁（VP，进阶）
