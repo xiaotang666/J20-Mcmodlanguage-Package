@@ -206,7 +206,7 @@ projects/<版本组>/assets/<命名空间>/lang/en_us.json   ← 建议附：英
 
 ### 4.4 硬编码补丁（VP，进阶）
 
-语言文件覆盖不到的硬编码文本走 Vault Patcher 补丁：放 `vaultpatcher/modules/<命名空间>.json`，`pairs` 的键必须与代码中硬编码字符串**完全一致**（含空格、格式码），模块头**必须**含 `_meta`（`mod_version` / `mc_version` / `last_verified`）。格式与 VP 配置说明见 [docs/FORMATS.md](docs/FORMATS.md)；制作前建议先开 Issue 讨论。
+语言文件覆盖不到的硬编码文本走 Vault Patcher 补丁：放 `vaultpatcher/modules/<命名空间>.json`，`pairs` 的键必须与代码中硬编码字符串**完全一致**（含空格、格式码），模块头**必须**含 `_meta`（`mod_version` / `mc_version` / `last_verified`）。**详细制作教程（七步流程 + 完整案例 + 调试排查）见 [docs/VP-GUIDE.md](docs/VP-GUIDE.md)**；制作前建议先开 Issue 讨论。
 
 ## 5. 提交流程（PR）
 

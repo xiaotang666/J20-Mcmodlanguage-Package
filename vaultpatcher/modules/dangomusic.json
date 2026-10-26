@@ -1,0 +1,386 @@
+[
+  {
+    "name": "Dango Music 汉化补丁",
+    "authors": "小坣",
+    "mods": "dangomusic",
+    "_meta": {
+      "mod_version": "1.4.1",
+      "mc_version": "26.2",
+      "last_verified": "2026-10-24"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.font.CjkFont"
+    ],
+    "pairs": {
+      "Dialog": "对话框"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.lyrics.LyricsProvider"
+    ],
+    "pairs": {
+      "NetEase": "网易云"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.modern.McCompat"
+    ],
+    "pairs": {
+      "Dango Music: graphics backend is {}, lyrics and the player screen are disabled": "Dango Music：图形后端为 {}，歌词与播放器界面已禁用",
+      "no GPU device": "无 GPU 设备"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.modern.ScreenLayer$LayerTexture"
+    ],
+    "pairs": {
+      "Dango Music screen": "Dango Music 界面"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.module.Category",
+      "me.sorihiko.dango.module.impls.music.DynamicIslandModule"
+    ],
+    "pairs": {
+      "Music": "音乐"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.module.ModuleManager"
+    ],
+    "pairs": {
+      "Module must with @ModuleMeta annotation": "模块必须带有 @ModuleMeta 注解"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.module.impls.music.DynamicIslandModule"
+    ],
+    "pairs": {
+      "DynamicIsland": "动态岛",
+      "Liquid glass": "液态玻璃",
+      "Show what the built-in player is playing": "显示内置播放器正在播放的内容",
+      "Song notify": "歌曲通知",
+      "Expand to show the song on track change or pause": "切歌或暂停时展开显示歌曲",
+      "Island size": "岛尺寸",
+      "Notify time": "通知时长",
+      "NOW PLAYING": "正在播放",
+      "How long song notifications stay (seconds)": "歌曲通知显示时长（秒）",
+      " fps": " 帧",
+      " ms": " 毫秒"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.module.impls.music.DynamicIslandModule",
+      "me.sorihiko.dango.module.impls.music.LyricsModule",
+      "me.sorihiko.dango.module.impls.music.SongCardModule"
+    ],
+    "pairs": {
+      "Scale": "缩放"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.module.impls.music.LyricsModule"
+    ],
+    "pairs": {
+      "3D lyrics": "3D 歌词",
+      "Show lyrics floating in the world": "在世界中悬浮显示歌词",
+      "Show the current song in the top left": "在左上角显示当前歌曲",
+      "Cover": "封面",
+      "Show the album cover in the top left": "在左上角显示专辑封面",
+      "Lyrics size": "歌词大小",
+      "Distance": "距离",
+      "Deep Glow style: white-hot core, wide soft halo": "深光晕风格：白热核心，宽柔光晕",
+      "Glow color": "发光颜色",
+      "Glow tint: text color, pink, blue or gold": "发光色调：文字颜色、粉色、蓝色或金色",
+      "Glow strength": "发光强度",
+      "Glow brightness": "发光亮度",
+      "Glow radius": "发光半径",
+      "Halo spread: higher is wider and softer": "光晕扩散：越高越宽越柔和",
+      "Smooth font": "平滑字体",
+      "Smooth font instead of the Minecraft pixel font": "使用平滑字体替代 Minecraft 像素字体",
+      "Wiggle": "抖动",
+      "Low-fps jitter on every letter, like hand-drawn animation": "每个字母低帧率抖动，如同手绘动画",
+      "Wiggle fps": "抖动帧率",
+      "Jitter frame rate: lower feels more hand-drawn": "抖动帧率：越低越有手绘感",
+      "Wiggle amount": "抖动幅度",
+      "Jitter strength": "抖动强度",
+      "Text flash": "文字闪烁",
+      "Words slam onto the screen one by one, synced to the beat": "文字逐个砸入屏幕，与节拍同步",
+      "Word pop": "文字弹出",
+      "Words pop in one by one as they are sung": "文字随演唱逐个弹出",
+      "Flash size": "闪烁大小",
+      "Text flash size": "文字闪烁大小",
+      "Face player": "面向玩家",
+      "Lyrics keep turning to face you": "歌词持续转向面向你",
+      "Keep away": "保持距离",
+      "Lyrics back off when you walk or sprint into them": "当你走向或跑向歌词时，歌词后退",
+      "Stay on screen": "保持在屏幕上",
+      "Lyrics glide back into view when you turn away, so they never leave the screen": "当你移开视线时，歌词滑回视野，因此永远不会离开屏幕",
+      "Above ground": "地面以上",
+      "Lyrics never appear below your eyes, so they don't sink into the ground": "歌词永远不会出现在你的视线下方，因此不会沉入地面",
+      "Spread": "间距",
+      "Split lines": "分行",
+      "How far away 3D lyrics appear (blocks)": "3D 歌词出现的距离（格）",
+      "How far left or right each line can appear (degrees)": "每行歌词左右偏移的最大角度（度）",
+      "Split two lines written as one (NetEase often does this) so they appear separately": "网易云常把两行写成一行，开启后将它们分开显示"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.module.impls.music.LyricsModule",
+      "me.sorihiko.dango.musicui.SettingsPage"
+    ],
+    "pairs": {
+      "Lyrics": "歌词",
+      "Now playing": "正在播放",
+      "Glow": "发光"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.module.impls.music.NeteaseMusicModule"
+    ],
+    "pairs": {
+      "NeteaseMusic": "网易云音乐",
+      "Volume": "音量",
+      "Playback volume": "播放音量",
+      "Play songs in random order": "随机顺序播放歌曲",
+      "Open key": "打开键",
+      "Key that opens the player": "打开播放器的按键",
+      "Hotkey to play or pause": "播放或暂停的快捷键",
+      "Previous": "上一首",
+      "Hotkey for the previous song": "上一首歌曲的快捷键",
+      "Next": "下一首",
+      "Hotkey for the next song": "下一首歌曲的快捷键",
+      "Volume up": "音量加",
+      "Hotkey to raise the volume by 5%": "将音量提高 5% 的快捷键",
+      "Volume down": "音量减",
+      "Hotkey to lower the volume by 5%": "将音量降低 5% 的快捷键",
+      "Toggle lyrics": "切换歌词",
+      "Hotkey to turn lyrics on or off": "开启或关闭歌词的快捷键"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.module.impls.music.NeteaseMusicModule",
+      "me.sorihiko.dango.musicui.PlayerBar"
+    ],
+    "pairs": {
+      "Shuffle": "随机播放"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.module.impls.music.SongCardModule"
+    ],
+    "pairs": {
+      "SongCard": "歌曲卡片",
+      "Card size": "卡片大小",
+      "Show when paused": "暂停时显示",
+      "Keep the card visible while paused": "暂停时保持卡片可见",
+      "Pos X": "X 坐标",
+      "Pos Y": "Y 坐标",
+      "Horizontal position (or drag it with chat open)": "水平位置（或在聊天框打开时拖动）",
+      "Vertical position (or drag it with chat open)": "垂直位置（或在聊天框打开时拖动）"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.music.CoverCache"
+    ],
+    "pairs": {
+      "download failed": "下载失败",
+      "unreadable image (": "无法读取的图像（"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.music.MusicScreen"
+    ],
+    "pairs": {
+      "Your playlists": "你的歌单",
+      "Recommended playlists": "推荐歌单",
+      "Welcome to Dango Music!": "欢迎来到 Dango Music！",
+      " charts": " 个排行榜"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.music.MusicScreen",
+      "me.sorihiko.dango.musicui.Sidebar"
+    ],
+    "pairs": {
+      "Charts": "排行榜"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.music.NeteaseApi"
+    ],
+    "pairs": {
+      "no response": "无响应"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.musicui.LoginDialog"
+    ],
+    "pairs": {
+      "Refresh QR": "刷新二维码"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.musicui.LoginDialog",
+      "me.sorihiko.dango.musicui.Sidebar"
+    ],
+    "pairs": {
+      "Log in to NetEase": "登录网易云"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.musicui.PartyPage"
+    ],
+    "pairs": {
+      "Play the same song in sync with friends who also have this mod": "与同样安装此模组的朋友同步播放同一首歌",
+      "You are the host · everyone in the room follows your music": "你是房主 · 房间内所有人跟随你的音乐",
+      "Create a room": "创建房间",
+      "OR JOIN WITH A ROOM CODE": "或使用房间码加入",
+      "ROOM CODE": "房间码",
+      "Join": "加入",
+      "Copied": "已复制",
+      "Copy": "复制",
+      "Close room": "关闭房间",
+      "Leave room": "离开房间",
+      "Resync": "重新同步",
+      "Everyone streams from their own NetEase account, so VIP songs need VIP on each side.": "每个人使用自己的网易云账号串流，因此 VIP 歌曲需要双方都有 VIP。",
+      "Listen Together is not set up (missing firebase.properties)": "未配置一起听（缺少 firebase.properties）",
+      "Following ": "正在跟随",
+      "IN THIS ROOM · ": "房间内 · ",
+      "  (you)": "（你）"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.musicui.PartyPage",
+      "me.sorihiko.dango.musicui.Sidebar"
+    ],
+    "pairs": {
+      "Listen Together": "一起听"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.musicui.PlayerBar"
+    ],
+    "pairs": {
+      "Not playing": "未播放"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.musicui.SettingsPage"
+    ],
+    "pairs": {
+      "Placement": "位置",
+      "In the world": "在世界中",
+      "Deep Glow": "深光晕",
+      "Motion": "运动",
+      "Animation": "动画",
+      "Classic overlay": "经典叠加层",
+      "Other": "其他",
+      "More": "更多",
+      "Playback": "播放",
+      "Hotkeys": "快捷键",
+      "Click, then press a key · Backspace clears": "点击后按下一个键 · 退格键清除",
+      "Song card": "歌曲卡片",
+      "Overlay": "叠加层",
+      "Dynamic Island": "动态岛",
+      "Changes apply instantly and are saved automatically": "更改立即生效并自动保存",
+      "Music & HUD": "音乐与 HUD",
+      "Press a key": "按下按键",
+      "None": "无",
+      "%.1f s": "%.1f 秒"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.musicui.SettingsPage",
+      "me.sorihiko.dango.musicui.Sidebar"
+    ],
+    "pairs": {
+      "Settings": "设置"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.musicui.SettingsPage",
+      "me.sorihiko.dango.party.ListenParty"
+    ],
+    "pairs": {
+      "Player": "播放器"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.musicui.Sidebar"
+    ],
+    "pairs": {
+      "Search songs...": "搜索歌曲…",
+      "Home": "主页",
+      "MY PLAYLISTS": "我的歌单",
+      "No playlists": "无歌单",
+      "Log in to see your playlists": "登录以查看你的歌单",
+      "Logged in": "已登录",
+      "Log out": "登出",
+      "Listen Together · ": "一起听 · "
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.musicui.Sidebar",
+      "me.sorihiko.dango.musicui.TracksPage"
+    ],
+    "pairs": {
+      "Now Playing": "正在播放"
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.musicui.TracksPage"
+    ],
+    "pairs": {
+      "No songs match \"": "没有歌曲匹配 \"",
+      "Search  \"": "搜索  \"",
+      "No results": "无结果",
+      "Nothing in the queue yet": "队列中还没有内容",
+      "Play all": "播放全部",
+      "List": "列表",
+      "Covers": "封面",
+      "Locate": "定位",
+      "Filter this list...": "筛选此列表…",
+      " of ": " / ",
+      " songs": " 首歌曲",
+      "Search failed: ": "搜索失败："
+    }
+  },
+  {
+    "target_classes": [
+      "me.sorihiko.dango.utils.Color$Companion"
+    ],
+    "pairs": {
+      "Invalid hex color: ": "无效的颜色值："
+    }
+  }
+]

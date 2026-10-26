@@ -21,6 +21,8 @@ projects/<mc_version>/assets/<namespace>/lang/en_us.json   # 源文件（对照�
 
 ## vaultpatcher/modules/ — VP 硬编码补丁
 
+> **制作教程（从零到可用，含 DangoMusic 实战案例）见 [docs/VP-GUIDE.md](VP-GUIDE.md)**。本节只列格式约定。
+
 每个模组一个 `<namespace>.json`，格式（冻结）：
 
 ```json

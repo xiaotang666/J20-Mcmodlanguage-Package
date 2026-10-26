@@ -3,6 +3,13 @@
 本项目自身版本号从 0.0.1 起递增（语义化迭代：Bug 修复 +0.0.1，重大功能 +0.1.0，架构变更 +1.0.0）。
 Release 发布版本号另按对外接口冻结格式 `YYYY.MM.DD-NNN` 自动生成，两者独立。
 
+## 0.2.8 — 2026-10-24
+
+### 文档
+- 新增 docs/VP-GUIDE.md：Vault Patcher 硬编码汉化制作指南——七步流程、逐字段结构说明、DangoMusic 实战案例（可照抄模块配置）、拼接片段/同串多类/占位符技巧、调试排查表、info 进阶
+- FORMATS.md / CONTRIBUTING.md 的 VP 节接入教程链接
+- 首个 VP 模块 `vaultpatcher/modules/dangomusic.json`（DangoMusic 1.4.1+26.2）：160 条 pairs 按 29 组类分组，含 xlsx 补漏条目；模块含 21 条 AI 译文待人工确认
+
 ## 0.2.7 — 2026-10-23
 
 ### 文档
