@@ -1,6 +1,7 @@
 # Vault Patcher 硬编码汉化制作指南
 
 > 本指南教你从零做出可用的 VP 汉化模块。零基础按第 3 节七步走；想直接抄，跳到 [第 4 节实战案例](#4-实战案例dangomusic可照抄)。
+> 格式细节已对照 VP 源码（`Pairs.java` / `ModuleInfo.java` / `TargetClassInfo.java`）核实。
 
 ## 0. 什么时候需要 VP
 
@@ -22,11 +23,14 @@ Vault Patcher 是一个 Fabric/Forge/NeoForge 模组，启动时读取模块文�
 ## 2. 模块文件结构（逐字段）
 
 文件放 `vaultpatcher/modules/<命名空间>.json`（命名空间一般取 modid），整体是一个数组：
+第 1 项是**模块头**（元信息），第 2 项起是**补丁体**（可多组）。VP 会忽略不认识的字段
+（所以本项目强制的 `_meta` 可以安全地写在模块头里）。
 
 ```json
 [
   {
     "name": "Dango Music 汉化补丁",
+    "desc": "Dango Music 1.4.1 硬编码文本汉化",
     "authors": "小坣",
     "mods": "dangomusic",
     "_meta": {
@@ -36,27 +40,34 @@ Vault Patcher 是一个 Fabric/Forge/NeoForge 模组，启动时读取模块文�
     }
   },
   {
-    "target_classes": ["me.sorihiko.dango.ui.PartyPage"],
-    "pairs": {
-      "Create a room": "创建房间",
-      "Leave room": "离开房间"
-    }
+    "target_classes": ["me.sorihiko.dango.musicui.PartyPage"],
+    "pairs": [
+      { "key": "Create a room", "value": "创建房间" },
+      { "key": "Leave room", "value": "离开房间" }
+    ]
   }
 ]
 ```
 
-| 字段 | 位置 | 必填 | 说明 |
-| --- | --- | --- | --- |
-| `name` | 模块头（数组第 1 项） | ✅ | 补丁名，随意起 |
-| `authors` | 模块头 | ✅ | 作者/翻译者 |
-| `mods` | 模块头 | ✅ | 对应 mod 的 modid |
-| `_meta` | 模块头 | ✅（本项目强制） | `mod_version` 补丁对应模组版本 / `mc_version` MC 版本 / `last_verified` 最近一次反编译核对日期（**模组更新后必须重新核对并更新**） |
-| `target_classes` | 补丁体（数组第 2 项起） | ✅ | 要替换的 Java 类名列表，**点分格式**：`me.sorihiko.dango.ui.PartyPage`（不是 `me/sorihiko/...`） |
-| `pairs` | 补丁体 | ✅ | `{"代码里的原文": "译文"}`，**键必须与代码字符串完全一致**（含空格、大小写、标点、占位符） |
-| `info` | 补丁体 | ❌ | 进阶精确定位（method/local/ordinal/match_mode），一般用不到，见第 6 节 |
+### 模块头字段
 
-一条 `pairs` 可以有多组补丁体：数组第 2、3、4… 项各自带自己的 `target_classes` + `pairs`，
-按类分组写，方便管理。
+| 字段（简写） | 必填 | 说明 |
+| --- | --- | --- |
+| `name`（`n`） | ✅ | 补丁名，随意起 |
+| `authors`（`a`） | ✅ | 作者/翻译者 |
+| `mods`（`m`） | ✅ | 对应 mod 的 modid |
+| `desc`（`d`） | — | 描述（缺省 "No description"） |
+| `dynamic`（`y`/`dyn`） | — | 动态替换模式，见 6.2（默认 `false`） |
+| `i18n`（`i`） | — | `value` 作为 VP 自带 i18n 的键解析，一般不用（默认 `false`） |
+| `_meta` | ✅（本项目强制） | `mod_version` / `mc_version` / `last_verified`（最近一次反编译核对日期；**模组更新后必须重新核对**）。VP 不认识此字段但会忽略，安全 |
+
+### 补丁体字段（数组第 2 项起，每组独立）
+
+| 字段（简写） | 必填 | 说明 |
+| --- | --- | --- |
+| `target_classes`（`t`/`s`/`target_class`） | ✅ | 要替换的 Java 类名数组，**点分格式** `me.sorihiko.dango.musicui.PartyPage`（不是 `me/sorihiko/...`）。**省略 = 全局替换一切类，危险别省** |
+| `pairs`（`p`） | ✅ | **`{"key","value"} 对象的数组`**（不是 JSON 对象映射！写成对象 VP 加载时直接报错）；`k`/`v` 是简写别名。**key 必须与代码字符串完全一致**（含空格、大小写、标点、占位符），key/value 顺序可颠倒 |
+| `info`（`i`） | ❌ | 进阶精确定位，字段见第 6 节，一般用不到 |
 
 ## 3. 制作流程（七步）
 
@@ -78,7 +89,7 @@ Vault Patcher 是一个 Fabric/Forge/NeoForge 模组，启动时读取模块文�
 
 ### 4.1 收集到的原文与翻译（节选）
 
-| 代码中的原文（键） | 译文 | 出现位置（类） |
+| 代码中的原文（key） | 译文（value） | 出现位置（类） |
 | --- | --- | --- |
 | `Create a room` | 创建房间 | PartyPage |
 | `Your playlists` | 你的歌单 | MusicScreen |
@@ -92,6 +103,7 @@ Vault Patcher 是一个 Fabric/Forge/NeoForge 模组，启动时读取模块文�
 [
   {
     "name": "Dango Music 汉化补丁",
+    "desc": "Dango Music 1.4.1 硬编码文本汉化",
     "authors": "小坣",
     "mods": "dangomusic",
     "_meta": {
@@ -101,25 +113,25 @@ Vault Patcher 是一个 Fabric/Forge/NeoForge 模组，启动时读取模块文�
     }
   },
   {
-    "target_classes": ["me.sorihiko.dango.ui.PartyPage"],
-    "pairs": {
-      "Create a room": "创建房间",
-      "OR JOIN WITH A ROOM CODE": "或使用房间码加入",
-      "ROOM CODE": "房间码",
-      "Join": "加入",
-      "Leave room": "离开房间",
-      "Listen Together is not set up (missing firebase.properties)": "未配置一起听（缺少 firebase.properties）",
-      "IN THIS ROOM · ": "房间内 · ",
-      "Following ": "正在跟随 ",
-      "  (you)": "（你）"
-    }
+    "target_classes": ["me.sorihiko.dango.musicui.PartyPage"],
+    "pairs": [
+      { "key": "Create a room", "value": "创建房间" },
+      { "key": "OR JOIN WITH A ROOM CODE", "value": "或使用房间码加入" },
+      { "key": "ROOM CODE", "value": "房间码" },
+      { "key": "Join", "value": "加入" },
+      { "key": "Leave room", "value": "离开房间" },
+      { "key": "Listen Together is not set up (missing firebase.properties)", "value": "未配置一起听（缺少 firebase.properties）" },
+      { "key": "IN THIS ROOM · ", "value": "房间内 · " },
+      { "key": "Following ", "value": "正在跟随 " },
+      { "key": "  (you)", "value": "（你）" }
+    ]
   },
   {
-    "target_classes": ["me.sorihiko.dango.module.SongCardModule"],
-    "pairs": {
-      "Horizontal position (or drag it with chat open)": "水平位置（或在聊天框打开时拖动）",
-      "Vertical position (or drag it with chat open)": "垂直位置（或在聊天框打开时拖动）"
-    }
+    "target_classes": ["me.sorihiko.dango.module.impls.music.SongCardModule"],
+    "pairs": [
+      { "key": "Horizontal position (or drag it with chat open)", "value": "水平位置（或在聊天框打开时拖动）" },
+      { "key": "Vertical position (or drag it with chat open)", "value": "垂直位置（或在聊天框打开时拖动）" }
+    ]
   }
 ]
 ```
@@ -132,10 +144,10 @@ Vault Patcher 是一个 Fabric/Forge/NeoForge 模组，启动时读取模块文�
 - **同串多类**：`"Dango Music"` 在 `DangoMusic.class` 和 `ModernMusicScreen.class` 都有 →
   `target_classes` 两个类都写，或分两组补丁体各写一个类。
 - **占位符照抄**：`"Dango Music: graphics backend is {}, ..."` 里的 `{}` 必须原样保留在译文里。
-- **键唯一**：同一原文在表格里出现多次（比如多处都是 `"no response"`）→ `pairs` 里**只能有一条**，
-  JSON 不允许重复键，翻译取统一版本。
+- **key 建议去重**：`pairs` 是数组，同一 key 写两条不报错，但**后一条会覆盖前一条**；
+  模棱两可不如去重，翻译取统一版本。
 - **大写常量**：`"NOW PLAYING"`、`"MY PLAYLISTS"` 这类装饰性全大写文本照常替换；含 `·`、`…`、
-  全角标点的键一定从代码里**原样复制**，别手敲。
+  全角标点的 key 一定从代码里**原样复制**，别手敲。
 
 ### 4.3 VP 配置（`config/vaultpatcher_asm/config.json`）
 
@@ -167,6 +179,7 @@ VP 会加载 `vaultpatcher/modules/` 下全部 `.json`。
 | --- | --- | --- |
 | 模块没被加载 | 整个模块无效 | `config.json` 的 `modules` 加了模块名？（不带 `.json`）或开 `load_all_modules` |
 | 文件放错位置 | 整个模块无效 | 必须是游戏根目录 `vaultpatcher/modules/<名>.json`（不是 resourcepacks，不是 config） |
+| **pairs 写成了对象** | **整个模块加载报错/无效** | **必须是 `[{"key":…,"value":…}]` 数组**，对象映射 `{"原文":"译文"}` 会解析失败 |
 | 键不一致 | 单条无效 | 空格/大小写/标点/占位符逐字符核对，**从代码或 xlsx 原样复制** |
 | 同串多类 | 换了 A 界面没换 B 界面 | `target_classes` 补上另一个类 |
 | 动态拼接 | 显示"3 首歌曲"这类没换 | 替换的是片段常量，检查片段键是否正确 |
@@ -174,27 +187,41 @@ VP 会加载 `vaultpatcher/modules/` 下全部 `.json`。
 
 `debug_mode.output_mode`：`0` 只显示实际发生替换的条目；`1` 显示全部尝试（排查键不一致时用 1）。
 
-## 6. 进阶：`info` 精确定位（极少用）
+## 6. 进阶：`info` 精确定位与动态替换（极少用）
 
-同一类里相同文本出现在多个方法、或需要按操作序数（ordinal）区分时，用 `info` 限定范围：
+### 6.1 `info` 限定替换范围
+
+同一类里相同文本出现在多个方法、或需要按操作序数（ordinal）区分时，用 `info` 限定。
+**字段只有这些**（不存在 `match_mode`/`local_mode` 之类的独立字段）：
+
+| 字段（简写） | 说明 |
+| --- | --- |
+| `method`（`m`） | 只替换该方法内的常量 |
+| `local`（`l`） | 按变量定位。**首字母是模式前缀**：`V`=局部变量、`M`=方法返回值、`R`=调用返回值、`G`/`F`=全局变量、`A`=数组元素，其余=不限。例：`"GresearchName"` 定位全局变量 `researchName` |
+| `annotation` | 按注解定位，对象：`{"desc": "注解描述符", "ak": "注解键", "type": "CLASS/FIELD/METHOD/ALL"}`（`descriptor`/`annokey` 同义） |
+| `ordinal`（`o`） | 操作序数：数字 `24`；或字符串 `"24,30"`（多个）、`"24-30"`（区间）、`"24-e"`（到末尾）。序数看 debug 日志里的 `[24]` 标记 |
+
+示例（取自 VP wiki）：
 
 ```json
 {
-  "target_classes": ["com.example.ExampleClass"],
+  "target_classes": ["com.example.ResearchWidget"],
   "info": {
     "method": "renderHover",
-    "match_mode": "FULL",
-    "local_mode": "GLOBAL_VARIABLE",
-    "local": "exampleName",
+    "local": "GresearchName",
     "ordinal": 24
   },
-  "pairs": { "This text is hardcoded": "这段文本是硬编码的" }
+  "pairs": [
+    { "key": "Backpacks", "value": "小背包" }
+  ]
 }
 ```
 
-字段含义：`method` 目标方法名 / `match_mode` FULL 精确匹配 / `local` 局部变量名 /
-`ordinal` 操作序数（VP debug 日志里会打印 `[24]` 这样的序数，填进来即可）/ `local_mode` 变量匹配模式。
-**99% 的补丁用不到 `info`**，先用最简结构，匹配不到再加。
+### 6.2 动态替换（`dynamic` 模式）
+
+模块头写 `"dynamic": true` 后语义变化：`target_classes` 的元素变成"动态名"——
+`@` 前缀=前缀匹配、`#` 前缀=后缀匹配、无前缀=全匹配；`pairs` 的 value 以 `@` 开头表示半匹配替换。
+适用于文本按变量拼接、无法整串匹配的复杂场景。**99% 的补丁用不到**，先用最简结构，匹配不到再考虑。
 
 ## 7. 提交到本项目
 

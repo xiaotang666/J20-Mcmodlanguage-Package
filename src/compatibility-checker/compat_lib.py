@@ -181,6 +181,23 @@ def check_vp_modules(vaultpatcher_dir: Path) -> list[str]:
         meta = head.get("_meta") if isinstance(head, dict) else None
         if not isinstance(meta, dict) or not meta.get("last_verified"):
             errors.append(f"{m.name}: 缺少 _meta.last_verified（入库强制：最近一次反编译核对日期）")
-        if len(data) < 2 or "target_classes" not in data[1] or "pairs" not in data[1]:
+        if len(data) < 2:
             errors.append(f"{m.name}: 缺少 target_classes/pairs 补丁体")
+            continue
+        for i, entry in enumerate(data[1:], 1):
+            if not isinstance(entry, dict) or "target_classes" not in entry or "pairs" not in entry:
+                errors.append(f"{m.name}: 补丁体 #{i} 缺少 target_classes/pairs")
+                continue
+            # VP 1.5.3 源码 Pairs.readJson 强制数组形态：[{"key":..,"value":..}]
+            # （对象形态 {"原文":"译文"} 会使 VP 加载模块时抛 IllegalStateException）
+            pairs = entry["pairs"]
+            if not isinstance(pairs, list):
+                errors.append(f"{m.name}: 补丁体 #{i} pairs 必须是数组 [{{\"key\":..,\"value\":..}}]，"
+                              f"当前为 {type(pairs).__name__}（VP 1.5.3 不接受对象形态）")
+                continue
+            for j, pair in enumerate(pairs):
+                if not isinstance(pair, dict) or not any(k in pair for k in ("key", "k")) \
+                        or not any(k in pair for k in ("value", "v")):
+                    errors.append(f"{m.name}: 补丁体 #{i} pairs[{j}] 必须是含 key/value 的对象")
+                    break
     return errors

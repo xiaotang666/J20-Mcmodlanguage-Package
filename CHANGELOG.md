@@ -3,6 +3,13 @@
 本项目自身版本号从 0.0.1 起递增（语义化迭代：Bug 修复 +0.0.1，重大功能 +0.1.0，架构变更 +1.0.0）。
 Release 发布版本号另按对外接口冻结格式 `YYYY.MM.DD-NNN` 自动生成，两者独立。
 
+## 0.2.9 — 2026-10-25
+
+### 修正（对照 VP 源码实证）
+- **pairs 格式纠正**：必须是 `[{"key":…,"value":…}]` 对象数组（Pairs.readJson 强制 beginArray()），此前文档/模块误用对象映射会导致 VP 加载失败——dangomusic.json 全量转换（160 条），VP-GUIDE/FORMATS 示例同步更正
+- VP-GUIDE info 字段纠正：删除不存在的 match_mode/local_mode，改为源码实有的 method/local(模式前缀字母)/annotation/ordinal(数字|列表|区间)；补模块头 desc/dynamic/i18n 可选字段与各字段简写别名；新增 dynamic 动态替换说明
+- check_vp_modules 校验加固：逐补丁体强制 pairs 数组形态与 key/value 对象（拒绝对象映射）
+
 ## 0.2.8 — 2026-10-24
 
 ### 文档

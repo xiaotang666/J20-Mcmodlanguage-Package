@@ -39,14 +39,15 @@ projects/<mc_version>/assets/<namespace>/lang/en_us.json   # 源文件（对照�
   },
   {
     "target_classes": ["com.example.ExampleClass"],
-    "pairs": {
-      "This text is hardcoded": "这段文本是硬编码的",
-      "Hardcoded GUI Title": "硬编码界面标题"
-    }
+    "pairs": [
+      { "key": "This text is hardcoded", "value": "这段文本是硬编码的" },
+      { "key": "Hardcoded GUI Title", "value": "硬编码界面标题" }
+    ]
   }
 ]
 ```
 
+- `pairs` **必须是数组形态** `[{"key": 原文, "value": 译文}, ...]`（VP 1.5.3 源码 `Pairs.readJson` 强制 `beginArray()`，对象形态 `{"原文":"译文"}` 会导致 VP 加载模块时抛 `Expected BEGIN_ARRAY but was BEGIN_OBJECT`，整个模块失效；`check_vp_modules` 会拒绝对象形态）；
 - `pairs` 的键必须与代码中的硬编码字符串**完全一致**（含空格、格式码）；
 - **必须**含 `_meta`（`mod_version` / `mc_version` / `last_verified`）：`last_verified` 为最近一次反编译核对日期，入库强制（`check_vp_modules` 会拒绝缺失的模块）。模组更新后必须重新反编译核对并更新；
 - 打包为 `vp-modules-{mc_version}.zip`（命名冻结），内部路径必须是 `vaultpatcher/modules/*.json`（仅一层、无子目录、无路径穿越字符，打包与 CI 双重校验）；
