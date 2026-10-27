@@ -1,0 +1,6 @@
+{
+  "slate_menu.creative.order.hint": "Drag a tab to move it",
+  "slate_menu.creative.order.reset": "Reset tab order",
+  "slate_menu.creative.order.reset.tip": "The item tabs of the creative inventory can be dragged to another place in its list, and stay there. This puts them back in the game's order.",
+  "slate_menu.creative.order.section": "Creative inventory"
+}
