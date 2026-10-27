@@ -21,10 +21,13 @@ jobs:
         id: compare
         run: |
           TAG=$(python - <<'EOF'
-          import urllib.request, urllib.parse
-          req = urllib.request.Request(
-              "https://github.com/CFPAOrg/Minecraft-Mod-Language-Package/releases/latest", method="HEAD")
-          print(urllib.parse.unquote(urllib.request.urlopen(req, timeout=30).url.rsplit("/tag/", 1)[-1]))
+          try:
+              import urllib.request, urllib.parse
+              req = urllib.request.Request(
+                  "https://github.com/CFPAOrg/Minecraft-Mod-Language-Package/releases/latest", method="HEAD")
+              print(urllib.parse.unquote(urllib.request.urlopen(req, timeout=20).url.rsplit("/tag/", 1)[-1]))
+          except Exception:
+              print("")
           EOF
           )
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
@@ -32,9 +35,12 @@ jobs:
           if [ -f config/merger/i18n-state.json ]; then
             OLD=$(python -c "import json;print(json.load(open('config/merger/i18n-state.json')).get('i18n_latest_release_tag',''))")
           fi
-          echo "i18n 最新资产: $TAG"
+          echo "i18n 最新资产: ${TAG:-（解析失败）}"
           echo "上次构建采用: ${OLD:-（无记录）}"
-          if [ "$TAG" = "$OLD" ]; then
+          if [ -z "$TAG" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "tag 解析失败，按有更新处理（fail-open，宁多勿漏）"
+          elif [ "$TAG" = "$OLD" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "i18n 无新资产，跳过打包"
           else

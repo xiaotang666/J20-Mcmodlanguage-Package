@@ -40,18 +40,22 @@ jobs:
           python src/merger/check_license.py --repo
 
       # 2.5 记录本次构建采用的 i18n 状态（供 daily-check.yml 每日对比：资产以 release tag 为准）
+      # 解析失败时记录空 tag 并放行——daily-check 下次比对不等即触发重建，自愈
       - name: Record i18n state
         run: |
-          SHA=$(git ls-remote https://github.com/CFPAOrg/Minecraft-Mod-Language-Package.git refs/heads/main | cut -f1)
+          SHA=$(git ls-remote https://github.com/CFPAOrg/Minecraft-Mod-Language-Package.git refs/heads/main | cut -f1) || SHA=""
           TAG=$(python - <<'EOF'
-          import urllib.request, urllib.parse
-          req = urllib.request.Request(
-              "https://github.com/CFPAOrg/Minecraft-Mod-Language-Package/releases/latest", method="HEAD")
-          print(urllib.parse.unquote(urllib.request.urlopen(req, timeout=30).url.rsplit("/tag/", 1)[-1]))
+          try:
+              import urllib.request, urllib.parse
+              req = urllib.request.Request(
+                  "https://github.com/CFPAOrg/Minecraft-Mod-Language-Package/releases/latest", method="HEAD")
+              print(urllib.parse.unquote(urllib.request.urlopen(req, timeout=20).url.rsplit("/tag/", 1)[-1]))
+          except Exception:
+              print("")
           EOF
           )
           printf '{\n  "i18n_head_sha": "%s",\n  "i18n_latest_release_tag": "%s",\n  "branch": "main"\n}\n' "$SHA" "$TAG" > config/merger/i18n-state.json
-          echo "i18n HEAD: $SHA / 最新资产: $TAG"
+          echo "i18n HEAD: $SHA / 最新资产: ${TAG:-（解析失败，下次构建自愈）}"
 
       # 3. i18n 发布包**全量基底**（按版本组 × 内容组解包发布包，覆盖 i18n 最新资源包全部内容）
       - name: Fetch i18n release packs (full base)

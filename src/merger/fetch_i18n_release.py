@@ -34,16 +34,18 @@ def download(url: str, dest: Path, mirror_prefix: str) -> bool:
     if dest.exists() and dest.stat().st_size > 0:
         print(f"[CACHE] {dest.name}")
         return True
-    try:
-        with urllib.request.urlopen(full, timeout=300) as r:
-            data = r.read()
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_bytes(data)
-        print(f"[GET]   {dest.name} ({len(data)} bytes)")
-        return True
-    except Exception as e:  # noqa: BLE001
-        print(f"[FAIL]  {full} -> {e}", file=sys.stderr)
-        return False
+    for attempt in range(1, 4):
+        try:
+            with urllib.request.urlopen(full, timeout=300) as r:
+                data = r.read()
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_bytes(data)
+            print(f"[GET]   {dest.name} ({len(data)} bytes)")
+            return True
+        except Exception as e:  # noqa: BLE001
+            print(f"[RETRY {attempt}/3] {dest.name} -> {e}", file=sys.stderr)
+    print(f"[FAIL]  {full} -> 三次尝试均失败", file=sys.stderr)
+    return False
 
 
 def extract_assets(zip_path: Path, target_dir: Path) -> int:
