@@ -56,7 +56,8 @@ python src/compatibility-checker/run_all.py build/
 
 | 脚本 | 职责 |
 | --- | --- |
-| `src/merger/fetch_i18n_files.py` | 按清单从 i18n 仓库 Raw 链接拉取指定文件（多镜像回退） |
+| `src/merger/fetch_i18n_release.py` | 拉取 i18n 发布包全量基底（`releases/latest/download` 直链，版本组映射与回退见 `config/merger/i18n-release.json`） |
+| `src/merger/fetch_i18n_files.py` | 增量拉取 i18n 仓库指定文件（发布包未单列的模组，多镜像回退） |
 | `src/merger/overlay_j20.py` | J20 自有翻译覆盖拉取结果（同名覆盖） |
 | `src/merger/verify.py` | 校验最终资源包结构（pack.mcmeta/语言文件/LICENSE/VP 路径） |
 | `src/merger/check_license.py` | 协议合规检查（包内/仓库，含防背书表述检查） |

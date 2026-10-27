@@ -12,27 +12,34 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       changed: ${{ steps.compare.outputs.changed }}
-      sha: ${{ steps.compare.outputs.sha }}
+      tag: ${{ steps.compare.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Compare i18n HEAD with last build
+      # 判据 = i18n 最新发布资产（release tag）。仓库 SHA 变化不触发（打包基底取自发布包，无新资产则产物不变）
+      - name: Compare i18n latest release with last build
         id: compare
         run: |
-          SHA=$(git ls-remote https://github.com/CFPAOrg/Minecraft-Mod-Language-Package.git refs/heads/main | cut -f1)
-          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          TAG=$(python - <<'EOF'
+          import urllib.request, urllib.parse
+          req = urllib.request.Request(
+              "https://github.com/CFPAOrg/Minecraft-Mod-Language-Package/releases/latest", method="HEAD")
+          print(urllib.parse.unquote(urllib.request.urlopen(req, timeout=30).url.rsplit("/tag/", 1)[-1]))
+          EOF
+          )
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           OLD=""
           if [ -f config/merger/i18n-state.json ]; then
-            OLD=$(python -c "import json;print(json.load(open('config/merger/i18n-state.json')).get('i18n_head_sha',''))")
+            OLD=$(python -c "import json;print(json.load(open('config/merger/i18n-state.json')).get('i18n_latest_release_tag',''))")
           fi
-          echo "i18n HEAD: $SHA"
-          echo "上次构建: ${OLD:-（无记录）}"
-          if [ "$SHA" = "$OLD" ]; then
+          echo "i18n 最新资产: $TAG"
+          echo "上次构建采用: ${OLD:-（无记录）}"
+          if [ "$TAG" = "$OLD" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "i18n 库无更新，跳过打包"
+            echo "i18n 无新资产，跳过打包"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "i18n 库有更新，触发打包"
+            echo "i18n 有新资产，触发全量打包"
           fi
 
   build:
