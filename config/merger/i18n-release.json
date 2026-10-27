@@ -1,0 +1,19 @@
+{
+  "description": "i18n 发布包拉取配置（构建时以发布包全量内容为基底）",
+  "repo": "CFPAOrg/Minecraft-Mod-Language-Package",
+  "asset_template": "Minecraft-Mod-Language-Modpack-{ver_key}{fabric_suffix}.zip",
+  "fabric_suffix": "-fabric",
+  "release_url_template": "https://github.com/{repo}/releases/latest/download/{asset}",
+  "version_keys": {
+    "1.20": "1-20",
+    "1.21": "1-21",
+    "26.1": "26-1",
+    "26.2": "26-1",
+    "26.3": "26-1"
+  },
+  "notes": [
+    "资产命名实测（2026-10-27）：1-20 / 1-21 / 26-1 及其 -fabric 变体存在；26-2 / 26-3 尚未单独分包，暂回退 26-1 包",
+    "version_keys 是版本组 -> i18n 资产版本段的映射；i18n 新开 26-2/26-3 分包时改此映射即可",
+    "CI 直连 github 下载；本地被墙时用 --mirror-prefix https://ghproxy.net/"
+  ]
+}

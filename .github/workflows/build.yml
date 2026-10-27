@@ -39,15 +39,30 @@ jobs:
           python src/compatibility-checker/check_vp_structure.py vaultpatcher/
           python src/merger/check_license.py --repo
 
-      # 2.5 记录本次构建依据的 i18n HEAD（供 daily-check.yml 每日对比）
+      # 2.5 记录本次构建采用的 i18n 状态（供 daily-check.yml 每日对比：资产以 release tag 为准）
       - name: Record i18n state
         run: |
           SHA=$(git ls-remote https://github.com/CFPAOrg/Minecraft-Mod-Language-Package.git refs/heads/main | cut -f1)
-          printf '{\n  "i18n_head_sha": "%s",\n  "branch": "main"\n}\n' "$SHA" > config/merger/i18n-state.json
-          echo "i18n HEAD recorded: $SHA"
+          TAG=$(python - <<'EOF'
+          import urllib.request, urllib.parse
+          req = urllib.request.Request(
+              "https://github.com/CFPAOrg/Minecraft-Mod-Language-Package/releases/latest", method="HEAD")
+          print(urllib.parse.unquote(urllib.request.urlopen(req, timeout=30).url.rsplit("/tag/", 1)[-1]))
+          EOF
+          )
+          printf '{\n  "i18n_head_sha": "%s",\n  "i18n_latest_release_tag": "%s",\n  "branch": "main"\n}\n' "$SHA" "$TAG" > config/merger/i18n-state.json
+          echo "i18n HEAD: $SHA / 最新资产: $TAG"
 
-      # 3. 按清单拉取 i18n 指定文件（按版本组 × 内容组分树）
-      - name: Fetch specified i18n files
+      # 3. i18n 发布包**全量基底**（按版本组 × 内容组解包发布包，覆盖 i18n 最新资源包全部内容）
+      - name: Fetch i18n release packs (full base)
+        run: |
+          python src/merger/fetch_i18n_release.py \
+            --config config/merger/i18n-release.json \
+            --pack-config config/packer/pack-config.json \
+            --output build/i18n-extracted/
+
+      # 3.5 增量补充：拉取 i18n 仓库中发布包未单列的模组（自带官中的大 mod 的社区修正，如 create/botania）
+      - name: Fetch specified i18n files (incremental)
         run: |
           python src/merger/fetch_i18n_files.py \
             --manifest j20-manifest/file-selection.json \
