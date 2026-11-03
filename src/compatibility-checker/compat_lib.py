@@ -182,8 +182,21 @@ def check_pack_format(projects_dir: Path, pack_config: dict) -> list[str]:
 
 
 def check_vp_modules(vaultpatcher_dir: Path) -> list[str]:
+    """源侧校验：通用层 modules/*.json 与版本差异层 modules/<版本组>/*.json 都逐个校验；
+    版本目录只允许一层且命名须为版本组（NN.NN），更深层嵌套判非法。"""
     errors = []
-    modules = sorted((vaultpatcher_dir / "modules").glob("*.json")) if (vaultpatcher_dir / "modules").is_dir() else []
+    modules_root = vaultpatcher_dir / "modules"
+    modules: list[Path] = []
+    if modules_root.is_dir():
+        modules.extend(sorted(modules_root.glob("*.json")))
+        for d in sorted(p for p in modules_root.iterdir() if p.is_dir()):
+            if not re.match(r"^\d+\.\d+$", d.name):
+                errors.append(f"modules/{d.name}: 版本目录命名非法（应为版本组如 1.21）")
+                continue
+            modules.extend(sorted(d.glob("*.json")))
+            for stray in d.rglob("*"):
+                if stray.is_file() and stray.suffix == ".json" and stray.parent != d:
+                    errors.append(f"modules/{d.name}/…/{stray.name}: 嵌套过深（版本层只允许一层）")
     for m in modules:
         try:
             data = json.loads(m.read_text(encoding="utf-8"))

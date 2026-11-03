@@ -187,7 +187,7 @@ projects/assets/<模组>/<版本目录>/<命名空间>/lang/en_us.json   ← 建
 | 对照原文文件名 | 固定 `en_us.json`（不打包，仅对照） | MC 语言文件约定 | `en_us.json` |
 | 翻译记忆 | `tm/<modid>.tmx` | mod 标识 | `create.tmx` |
 | 术语库 | `glossary/<modid>.json`（模组专属）/ `glossary/mods.json` / `glossary/vanilla.json` | mod 标识 | `create.json` |
-| VP 硬编码补丁 | `vaultpatcher/modules/<命名空间>.json`，模块头必须含 `_meta.last_verified` | 命名空间 | `create.json` |
+| VP 硬编码补丁 | `vaultpatcher/modules/<模块名>.json`（通用层，全版本生效）；仅某版本类名/字符串不同时才放 `vaultpatcher/modules/<版本组>/<模块名>.json`（版本差异层，同名整体覆盖，沿回退链复用） | 模块头必须含 `_meta.last_verified` | `slate-menu-neoforge.json` |
 
 **版本组对照**（当前覆盖 1.20.1 及以上全部正式版）：
 

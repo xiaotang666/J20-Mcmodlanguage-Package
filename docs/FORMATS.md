@@ -26,7 +26,14 @@ projects/assets/<mod_dir>/<mc_version>/<namespace>/lang/en_us.json   # 源文件
 
 > **制作教程（从零到可用，含 DangoMusic 实战案例）见 [docs/VP-GUIDE.md](VP-GUIDE.md)**。本节只列格式约定。
 
-每个模组一个 `<namespace>.json`，格式（冻结）：
+模块分两层存放（与 `projects/` 同一条版本回退链）：
+
+- **通用层** `modules/<模块名>.json`：所有版本共用（日常放这里）；
+- **版本差异层** `modules/<版本组>/<模块名>.json`：仅当某版本 mod 的类名/硬编码字符串不同时才放，同名整体覆盖（非按键合并）。
+
+打包时按回退链（26.3→26.2→26.1→1.21→1.20）解析：同名模块链内先命中先赢（写在低版本目录的被高版本构建自动复用），通用层兜底；**zip 内恒为一层平铺** `vaultpatcher/modules/*.json`（冻结契约不变）。
+
+每个模块一个 `<模块名>.json`，格式（冻结）：
 
 ```json
 [
