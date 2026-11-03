@@ -18,7 +18,7 @@ python src/merger/fetch_i18n_files.py \
     --pack-config config/packer/pack-config.json \
     --output build/i18n-extracted/
 
-# 2. J20 自有翻译覆盖 i18n 拉取结果（自动遍历 projects/ 全部版本组）
+# 2. J20 自有翻译覆盖 i18n 拉取结果（projects/assets/<mod>/<版本>/<ns>/ 按版本回退链解析到全部版本组）
 python src/merger/overlay_j20.py --source projects/ --target build/i18n-extracted/
 
 # 3. 打包 VP 模块与最终资源包（按 pack-config 的 vp_groups / packs 全量产出）
@@ -50,7 +50,7 @@ python src/compatibility-checker/run_all.py build/
 | `26.2` | 26.2 | `min_format:[85,0]/max_format:[88,9]` |
 | `26.3` | 26.3 | `min_format:[89,0]/max_format:[97,9]` |
 
-加载器共享（对齐 i18n）：Forge 与 NeoForge 共用同一份内容（`copy_of: "forge"`，字节级副本改名产出），Fabric 独立（拉取时自动优先 i18n 的 `-fabric` 版本目录）。新增版本组时：在 `pack_formats` 加格式声明 + `packs[]` 加三个目标包 + `vp_groups` 加组名 + `file-selection.json` 加版本组配置即可。
+加载器共享（对齐 i18n）：Forge 与 NeoForge 共用同一资产（`pack-{mc}-{content}` 的 content=forge，manifest 两加载器条目共指），Fabric 独立（拉取时自动优先 i18n 的 `-fabric` 版本目录，缺则回退基底）。新增版本组时：在 `pack_formats` 加格式声明 + `project_version_chain` 加回退链 + `packs[]` 加三个目标包 + `vp_groups` 加组名 + `file-selection.json` 加版本组配置即可。
 
 ## 脚本清单
 
@@ -99,7 +99,7 @@ python src/linter/run.py projects/ --json build/lint-report.json
 ## 接口冻结红线（改前必读）
 
 - manifest.json 冻结字段、`YYYY.MM.DD-NNN` 版本格式
-- Release 资产命名 `pack-{mc_version}-{loader}.zip` / `vp-modules-{mc_version}.zip`
+- Release 资产命名 `pack-{mc_version}-{content}.zip`（content=forge|fabric；forge/neoforge 共用 forge 资产）/ `vp-modules-{mc_version}.zip`
 - 资源包内部结构 `pack.mcmeta + assets/<ns>/lang/zh_cn.*`
 - VP 包内部结构 `vaultpatcher/modules/*.json`
 

@@ -67,7 +67,8 @@ def main() -> int:
     packages = []
     vp_packages = []
     for pack in cfg["packs"]:
-        asset = f"pack-{pack['mc_version']}-{pack['loader']}.zip"
+        # 资产按 content 命名/共享：forge/neoforge 条目共指 pack-{mc}-forge.zip（i18n 共包模式）
+        asset = f"pack-{pack['mc_version']}-{pack['content']}.zip"
         path = build_dir / asset
         if not path.exists():
             print(f"[WARN] 资产不存在，跳过：{asset}", file=sys.stderr)

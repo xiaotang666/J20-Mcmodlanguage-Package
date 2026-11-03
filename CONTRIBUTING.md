@@ -7,7 +7,7 @@
 ## 1. 太长不看：三步提交
 
 1. **翻译**：从 mod 的 `en_us.json` 翻出 `zh_cn.json`（规则见第 3 节）；
-2. **放对位置**：按命名规范放进 `projects/<版本组>/assets/<命名空间>/lang/`（规则见第 4 节）；
+2. **放对位置**：按命名规范放进 `projects/assets/<模组>/<版本目录>/<命名空间>/lang/`（规则见第 4 节）；
 3. **自检后提 PR**：跑 `python src/linter/run.py projects/` 错误清零，提交 Pull Request（流程见第 5 节）。
 
 合并后 CI 自动构建发布，玩家端通过 j20UpdateMod 自动获取。
@@ -54,19 +54,20 @@ mod jar 里 `assets/create/lang/en_us.json` 的原文：
 
 ### 2.2 例 2：文件放哪
 
-Create 1.20.1 → 版本组取前两段 `1.20`；命名空间看 jar 里 `assets/` 下的目录名 `create`：
+Create 1.20.1 → 版本目录取前两段 `1.20`；模组目录用 mod 名 `create`；命名空间看 jar 里 `assets/` 下的目录名 `create`：
 
 ```
 projects/
-└── 1.20/                          ← 版本组（1.20.1 的前两段）
-    └── assets/
-        └── create/                ← 命名空间（jar 内 assets/ 下的目录名）
-            └── lang/
-                ├── en_us.json     ← 对照（建议附，不打包）
-                └── zh_cn.json     ← 译文（必交）
+└── assets/
+    └── create/                  ← 模组目录（mod 名）
+        └── 1.20/                ← 版本目录（1.20.1 的前两段）
+            └── create/          ← 命名空间（jar 内 assets/ 下的目录名）
+                └── lang/
+                    ├── en_us.json   ← 对照（建议附，不打包）
+                    └── zh_cn.json   ← 译文（必交）
 ```
 
-同一 mod 还要支持 1.21.1？把同两份文件再放一份到 `projects/1.21/assets/create/lang/`（内容可以相同）。
+同一 mod 还要支持 1.21.1？**不用再放一份**——把翻译写在**最低适用版本**目录（这里是 `1.20/`），构建 1.21、26.x 包时会沿版本回退链自动取用。只有某个版本的译文**内容不同**时，才在那个版本目录另立一份（同名文件整体覆盖）。
 
 ### 2.3 例 3：自检与 PR
 
@@ -122,16 +123,16 @@ assets/slate_overhaul/lang/en_us.json    (4.4 KB)
 assets/slate_stats/lang/en_us.json       (9.8 KB)
 ```
 
-**规则：有几个含 `lang` 的命名空间，就翻几套、放几套，各归各的目录。** 此 jar 是 neoforge 1.21.1 → 版本组 `1.21`，汉化后这样放：
+**规则：有几个含 `lang` 的命名空间，就翻几套、放几套，各归各的目录。** 此 jar 是 neoforge 1.21.1 → 版本目录 `1.21`，套件归拢在一个模组目录 `slate/` 下，汉化后这样放：
 
 ```
-projects/1.21/assets/slate_creative/lang/zh_cn.json
-projects/1.21/assets/slate_infohud/lang/zh_cn.json
-projects/1.21/assets/slate_lookat/lang/zh_cn.json
-projects/1.21/assets/slate_map3d/lang/zh_cn.json
-projects/1.21/assets/slate_menu/lang/zh_cn.json
-projects/1.21/assets/slate_overhaul/lang/zh_cn.json
-projects/1.21/assets/slate_stats/lang/zh_cn.json
+projects/assets/slate/1.21/slate_creative/lang/zh_cn.json
+projects/assets/slate/1.21/slate_infohud/lang/zh_cn.json
+projects/assets/slate/1.21/slate_lookat/lang/zh_cn.json
+projects/assets/slate/1.21/slate_map3d/lang/zh_cn.json
+projects/assets/slate/1.21/slate_menu/lang/zh_cn.json
+projects/assets/slate/1.21/slate_overhaul/lang/zh_cn.json
+projects/assets/slate/1.21/slate_stats/lang/zh_cn.json
 ```
 
 要点：
@@ -169,18 +170,19 @@ projects/1.21/assets/slate_stats/lang/zh_cn.json
 ### 4.1 路径模板
 
 ```
-projects/<版本组>/assets/<命名空间>/lang/zh_cn.json   ← 必交：中文译文
-projects/<版本组>/assets/<命名空间>/lang/en_us.json   ← 建议附：英文原文（对照用，不打包）
+projects/assets/<模组>/<版本目录>/<命名空间>/lang/zh_cn.json   ← 必交：中文译文
+projects/assets/<模组>/<版本目录>/<命名空间>/lang/en_us.json   ← 建议附：英文原文（对照用，不打包）
 ```
 
-完整示例见 [第 2 节](#2-完整实例跟着做一遍create-120)；**一个 jar 里有多个命名空间（好几个 lang）时的放法见 [2.5 真实案例](#25-例-5一个-jar-里有多个-lang-目录真实案例)**。
+版本目录**只在版本间译文不同时才需要**；多版本通用的翻译写在最低适用版本目录，高版本构建自动回退取用（规则见 4.3）。完整示例见 [第 2 节](#2-完整实例跟着做一遍create-120)；**一个 jar 里有多个命名空间（好几个 lang）时的放法见 [2.5 真实案例](#25-例-5一个-jar-里有多个-lang-目录真实案例)**。
 
 ### 4.2 命名规范速查表
 
 | 内容 | 位置/命名 | 依据 | 示例 |
 | --- | --- | --- | --- |
-| 版本组目录 | `projects/<版本组>/`，取 **MC 版本号前两段** | MC 版本 → 版本组 | `1.20.1`→`1.20`，`1.21.11`→`1.21`，`26.1.2`→`26.1` |
-| 命名空间目录 | `assets/<命名空间>/`，取 mod jar 内 `assets/` 下的目录名 | mod 资源命名空间 | `create`、`mekanism`、`appliedenergistics2` |
+| 模组目录 | `projects/assets/<模组>/`，用 mod 名（一套套件可用套件名） | mod 标识 | `create`、`applied-energistics-2`、`slate` |
+| 版本目录 | `<模组>/<版本目录>/`，取 **MC 版本号前两段** | MC 版本 → 版本目录 | `1.20.1`→`1.20`，`1.21.11`→`1.21`，`26.1.2`→`26.1` |
+| 命名空间目录 | `<版本目录>/<命名空间>/`，取 mod jar 内 `assets/` 下的目录名 | mod 资源命名空间 | `create`、`mekanism`、`appliedenergistics2` |
 | 译文文件名 | 固定 `zh_cn.json`（简体中文语言键） | MC 语言文件约定 | `zh_cn.json` |
 | 对照原文文件名 | 固定 `en_us.json`（不打包，仅对照） | MC 语言文件约定 | `en_us.json` |
 | 翻译记忆 | `tm/<modid>.tmx` | mod 标识 | `create.tmx` |
@@ -199,7 +201,7 @@ projects/<版本组>/assets/<命名空间>/lang/en_us.json   ← 建议附：英
 
 ### 4.3 关键概念
 
-- **版本组 = MC 版本号前两段**：同组小版本共用同一份翻译（1.20.1 和 1.20.2 都放 `projects/1.20/`）；一个 mod 同时支持多个版本组时，**每个版本组目录各放一份**（内容可以相同）；
+- **版本目录 = MC 版本号前两段**：同组小版本共用同一份翻译（1.20.1 和 1.20.2 都放 `1.20/`）；一个 mod 支持多个版本时，**翻译写在最低适用版本目录一份即可**——构建高版本包时沿回退链（26.3→26.2→26.1→1.21→1.20）自动取用；**仅当某版本译文内容不同**时，才在该版本目录另立一份（同名文件整体覆盖，非按键合并）；
 - **命名空间 ≠ 模组文件名**：以 mod jar 内 `assets/` 下的目录名为准（拿不准就看 jar 里语言文件的实际路径，或游戏内物品 ID 的前缀）。常见坑：`applied-energistics-2` 的命名空间是 `appliedenergistics2`，`Mekanism` 是 `mekanism`（全小写）；
 - **一个 jar 可以有多个命名空间**（套件类模组常见，如 Slate Menu 一个 jar 七个命名空间）：有几个含 `lang` 的命名空间就翻几套、放几套，各归各的目录（真实案例见 2.5）；
 - **文件格式**：UTF-8 编码（无 BOM）、标准 JSON——一个扁平对象，`"键": "值"` 逐行排列；**只翻译值，键名一个字符都不能改**；同一文件禁止重复键。
@@ -262,11 +264,11 @@ python src/ai-translate/mark_draft.py --mod-dir <mod_dir>
 #    （去掉全部【AI·待审核】/【术语机翻·待审核】前缀，处理掉【待翻译】条目）
 
 # 5) 审核通过后入库（自动跑 Linter，有错误拒绝入库并回滚；草稿归档 _approved/）
-#    --mc-version 填版本组（1.20 / 1.21 / 26.1 / 26.2 / 26.3）
+#    --mc-version 填版本目录（1.20 / 1.21 / 26.1 / 26.2 / 26.3）
 python src/ai-translate/approve.py --mod-dir <mod_dir> --namespace <ns> --mc-version 1.20
 ```
 
-入库后的文件落在 `projects/<版本组>/assets/<命名空间>/lang/`（即第 4 节的标准位置），之后走正常 PR/审核流程。
+入库后的文件落在 `projects/assets/<模组>/<版本目录>/<命名空间>/lang/`（即第 4 节的标准位置），之后走正常 PR/审核流程。
 
 ### 6.4 审核红线
 
@@ -282,7 +284,7 @@ python src/ai-translate/approve.py --mod-dir <mod_dir> --namespace <ns> --mc-ver
 
 | 错误 | 后果 | 正确做法 |
 | --- | --- | --- |
-| 放错版本组（1.20.1 的翻译放进 `1.21/`） | 玩家端加载不到 | 版本组 = MC 版本前两段，查 4.2 对照表 |
+| 放错版本目录（1.20.1 的翻译放进 `1.21/`） | 玩家端加载不到 | 版本目录取 MC 版本前两段，查 4.2 对照表；不确定就放最低适用版本（高版本自动回退取用） |
 | 命名空间抄成模组文件名 | 打包后路径无效 | 以 jar 内 `assets/` 目录名为准 |
 | 删改格式码/占位符 | 游戏内乱码/报错 | `§` `%s` `{0}` `\n` 等原样保留 |
 | 改了键名或留下重复键 | 对应文本失效 | 只翻译值 |
@@ -301,4 +303,4 @@ python src/ai-translate/approve.py --mod-dir <mod_dir> --namespace <ns> --mc-ver
 
 ## 9. 接口冻结提醒
 
-`manifest.json` 字段、Release 资产命名（`pack-{mc_version}-{loader}.zip` / `vp-modules-{mc_version}.zip`）、资源包与 VP 包内部结构为对 j20UpdateMod 的**冻结接口**，禁止在贡献中变更。新增 MC 版本只新增 package，不改旧 package。详见 [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) 的"接口冻结红线"。
+`manifest.json` 字段、Release 资产命名（`pack-{mc_version}-{content}.zip`（forge/neoforge 共用 forge 资产）/ `vp-modules-{mc_version}.zip`）、资源包与 VP 包内部结构为对 j20UpdateMod 的**冻结接口**，禁止在贡献中变更。新增 MC 版本只新增 package，不改旧 package。详见 [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) 的"接口冻结红线"。

@@ -13,6 +13,13 @@
       "i18n_dir_suffixes": ["-fabric", ""]
     }
   },
+  "project_version_chain": {
+    "1.20": ["1.20"],
+    "1.21": ["1.21", "1.20"],
+    "26.1": ["26.1", "1.21", "1.20"],
+    "26.2": ["26.2", "26.1", "1.21", "1.20"],
+    "26.3": ["26.3", "26.2", "26.1", "1.21", "1.20"]
+  },
   "pack_formats": {
     "1.20": { "pack_format": 15, "supported_formats": [15, 32] },
     "1.21": { "pack_format": 34, "supported_formats": [34, 64], "min_format": [69, 0], "max_format": [75, 9] },
@@ -22,19 +29,19 @@
   },
   "packs": [
     { "mc_version": "1.20", "loader": "forge", "content": "forge" },
-    { "mc_version": "1.20", "loader": "neoforge", "content": "forge", "copy_of": "forge" },
+    { "mc_version": "1.20", "loader": "neoforge", "content": "forge" },
     { "mc_version": "1.20", "loader": "fabric", "content": "fabric" },
     { "mc_version": "1.21", "loader": "forge", "content": "forge" },
-    { "mc_version": "1.21", "loader": "neoforge", "content": "forge", "copy_of": "forge" },
+    { "mc_version": "1.21", "loader": "neoforge", "content": "forge" },
     { "mc_version": "1.21", "loader": "fabric", "content": "fabric" },
     { "mc_version": "26.1", "loader": "forge", "content": "forge" },
-    { "mc_version": "26.1", "loader": "neoforge", "content": "forge", "copy_of": "forge" },
+    { "mc_version": "26.1", "loader": "neoforge", "content": "forge" },
     { "mc_version": "26.1", "loader": "fabric", "content": "fabric" },
     { "mc_version": "26.2", "loader": "forge", "content": "forge" },
-    { "mc_version": "26.2", "loader": "neoforge", "content": "forge", "copy_of": "forge" },
+    { "mc_version": "26.2", "loader": "neoforge", "content": "forge" },
     { "mc_version": "26.2", "loader": "fabric", "content": "fabric" },
     { "mc_version": "26.3", "loader": "forge", "content": "forge" },
-    { "mc_version": "26.3", "loader": "neoforge", "content": "forge", "copy_of": "forge" },
+    { "mc_version": "26.3", "loader": "neoforge", "content": "forge" },
     { "mc_version": "26.3", "loader": "fabric", "content": "fabric" }
   ],
   "vp_groups": ["1.20", "1.21", "26.1", "26.2", "26.3"],

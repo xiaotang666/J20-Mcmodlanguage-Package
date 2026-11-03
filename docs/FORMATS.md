@@ -2,14 +2,17 @@
 ## projects/ — J20 自有翻译（核心）
 
 ```
-projects/<mc_version>/assets/<namespace>/lang/zh_cn.json
-projects/<mc_version>/assets/<namespace>/lang/en_us.json   # 源文件（对照用，不打包）
+projects/assets/<mod_dir>/<mc_version>/<namespace>/lang/zh_cn.json
+projects/assets/<mod_dir>/<mc_version>/<namespace>/lang/en_us.json   # 源文件（对照用，不打包）
 ```
 
-- 打包时本目录文件**覆盖** i18n 拉取的同名文件（`overlay_j20.py`）；
+结构对齐 i18n 库（模组 → 版本 → 命名空间）：
+- 打包时本目录文件**覆盖** i18n 拉取的同名文件（`overlay_j20.py`，按**版本回退链**取文件：
+  构建某版本组时同一份文件沿链（26.3→26.2→26.1→1.21→1.20）查找，最先命中即用——
+  写在低版本目录的翻译被高版本构建自动复用；仅当某版本译文内容不同时才在该版本目录另立一份）；
 - 新增翻译放入对应路径，或经 待审核/ 工作流由 `approve.py` 自动入库；
 - 提交前必须过 `python src/linter/run.py projects/`（错误清零）；
-- `<mc_version>` 为**版本组**（版本号前两段，如 `1.20`、`26.1`），必须在
+- `<mc_version>` 为**版本目录**（版本号前两段，如 `1.20`、`26.1`），必须在
   `config/packer/pack-config.json` 的 `pack_formats` 中有映射；组内小版本共用同一资源包。
 
 ## tm/ — 翻译记忆库（TMX）

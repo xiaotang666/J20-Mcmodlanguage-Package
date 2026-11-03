@@ -5,7 +5,7 @@
 - manifest 字段：schema_version / latest.version / latest.packages /
   packages[].mc_version / loader / asset_name / release_url / md5 / size
 - 版本号格式：YYYY.MM.DD-NNN
-- Release 资产命名：pack-{mc_version}-{loader}.zip / vp-modules-{mc_version}.zip
+- Release 资产命名：pack-{mc_version}-{content}.zip（forge|fabric；forge/neoforge 共用 forge 资产）/ vp-modules-{mc_version}.zip
 - 资源包内部结构：pack.mcmeta + assets/<ns>/lang/zh_cn.*
 - VP 包内部结构：vaultpatcher/modules/*.json
 """
@@ -115,8 +115,9 @@ def check_vp_zip_structure(path: Path) -> list[str]:
 
 def check_pack_format(projects_dir: Path, pack_config: dict) -> list[str]:
     """版本组 × 加载器矩阵一致性：
-    - projects/<版本组>/ 目录必须能在 pack_formats 中映射到合法格式声明；
-    - packs[] 的每个版本组必须有格式声明，内容组/copy_of 引用必须成立。
+    - projects/assets/<模组>/<版本组>/ 的版本目录必须能在 pack_formats 中映射到合法格式声明；
+    - project_version_chain（版本回退链）必须覆盖全部版本组、链内版本合法、首位为自身；
+    - packs[] 的每个版本组必须有格式声明，内容组引用必须成立。
     """
     errors = []
     table = pack_config.get("pack_formats", {})
@@ -131,9 +132,27 @@ def check_pack_format(projects_dir: Path, pack_config: dict) -> list[str]:
         if not isinstance(spec, dict) or not fmt_ok(spec):
             errors.append(f"pack_formats.{group} 格式声明非法（需 pack_format 或 min_format+max_format）")
 
-    for d in sorted(p for p in projects_dir.iterdir() if p.is_dir()):
-        if d.name not in table:
-            errors.append(f"projects/{d.name} 在 pack_formats 中无映射，pack.mcmeta 无法确定")
+    mods_root = projects_dir / "assets"
+    if mods_root.is_dir():
+        for mod_dir in sorted(p for p in mods_root.iterdir() if p.is_dir()):
+            for d in sorted(p for p in mod_dir.iterdir() if p.is_dir()):
+                if d.name not in table:
+                    errors.append(f"projects/assets/{mod_dir.name}/{d.name} 版本目录在 pack_formats 中无映射，pack.mcmeta 无法确定")
+
+    chains = pack_config.get("project_version_chain", {})
+    if not chains:
+        errors.append("pack-config 缺少 project_version_chain（版本回退链）")
+    for g in table:
+        if chains and g not in chains:
+            errors.append(f"project_version_chain 缺少版本组 {g}")
+    for g, chain in chains.items():
+        if g not in table:
+            errors.append(f"project_version_chain.{g} 在 pack_formats 中无映射")
+        if not chain or chain[0] != g:
+            errors.append(f"project_version_chain.{g} 首位应为自身（链序即优先级）：{chain}")
+        for c in chain:
+            if c not in table:
+                errors.append(f"project_version_chain.{g} 含未知版本 {c}")
 
     seen_assets = set()
     for pack in pack_config.get("packs", []):

@@ -4,10 +4,10 @@
     python src/packer/build_final.py --lang-dir build/i18n-extracted/ --output build/
 
 行为约定（对齐 i18n 的打包方案）：
-- 按 pack-config.json 的 packs[] 逐个产出资产；内容按 content 字段取
-  <lang-dir>/<forge|fabric>/ 下的语言树；
-- NeoForge 包（copy_of: "forge"）与 Forge 包字节级相同，只改资产名
-  —— i18n 的 "(Neoforge)" 共包模式，保证三个加载器都有可下载资产；
+- 按 pack-config.json 的 packs[] 去重 (mc_version, content) 逐个产出资产，
+  资产名 pack-{mc_version}-{content}.zip（10 个唯一资产）；
+- forge/neoforge 共用 content=forge 的同一资产（i18n "(Neoforge) 共包"模式），
+  manifest 的 15 条目按 content 指向这 10 个资产，不复制字节副本；
 - pack.mcmeta 按版本组生成：1.20 用 pack_format + supported_formats（1.20.2+ 范围），
   1.21 双方案（旧客户端读 pack_format/supported_formats，1.21.9+ 读 min_format/max_format），
   26.x 只用 min_format/max_format 元组。
@@ -92,12 +92,13 @@ def main() -> int:
     formats = cfg["pack_formats"]
     contents = cfg.get("content_groups", {})
 
-    # 先构建真实内容包，再复制共享包（copy_of），保证复制源已存在
-    real_packs = [p for p in cfg["packs"] if "copy_of" not in p]
-    copy_packs = [p for p in cfg["packs"] if "copy_of" in p]
-
-    for pack in real_packs:
+    # 按 (mc_version, content) 去重产出唯一资产；forge/neoforge 共用 content=forge
+    built = set()
+    for pack in cfg["packs"]:
         mc, loader, content = pack["mc_version"], pack["loader"], pack["content"]
+        if (mc, content) in built:
+            continue
+        built.add((mc, content))
         lang_dir = lang_root / mc / content
         if not lang_dir.is_dir():
             print(f"[WARN] 内容目录不存在：{lang_dir}", file=sys.stderr)
@@ -106,18 +107,9 @@ def main() -> int:
             return 1
         label = contents.get(content, {}).get("label", loader)
         mcmeta = build_mcmeta(formats[mc], mc, label)
-        out_path = out_dir / f"pack-{mc}-{loader}.zip"
-        build_one(lang_dir, Path(args.modules_dir), out_path, mcmeta, mc, loader)
-
-    for pack in copy_packs:
-        mc, loader = pack["mc_version"], pack["loader"]
-        src = out_dir / f"pack-{mc}-{pack['copy_of']}.zip"
-        dst = out_dir / f"pack-{mc}-{loader}.zip"
-        if not src.exists():
-            print(f"[FATAL] 共享包源不存在：{src.name}", file=sys.stderr)
-            return 1
-        shutil.copyfile(src, dst)
-        print(f"[COPY]  {dst.name} = {src.name}（{loader} 共用 {pack['copy_of']} 内容）")
+        out_path = out_dir / f"pack-{mc}-{content}.zip"
+        build_one(lang_dir, Path(args.modules_dir), out_path, mcmeta, mc, content)
+    print(f"[PACK] 共 {len(built)} 个唯一资产（manifest {len(cfg['packs'])} 条目按 content 共指）")
     return 0
 
 

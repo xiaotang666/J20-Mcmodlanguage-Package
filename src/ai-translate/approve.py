@@ -1,14 +1,14 @@
 """人工审核通过后，把待审核草稿正式入库到 projects/。
 
 用法：
-    python src/ai-translate/approve.py --mod-dir create --namespace create --mc-version 1.20.1 \
+    python src/ai-translate/approve.py --mod-dir create --namespace create --mc-version 1.20 \
         [--pending-root ../待审核] [--skip-lint]
 
 流程：
 1. 草稿 zh_cn.json 必须存在 REVIEW-NOTES.md（未标注不给入库）；
 2. 去除 【AI·待审核】 / 【待翻译】 / 【术语机翻·待审核】 前缀——存在【待翻译】占位则直接拒绝；
 3. 跑 Linter（src/linter/run.py），有错误拒绝入库，警告放行并打印；
-4. 写入 projects/<mc_version>/assets/<namespace>/lang/zh_cn.json（en_us.json 一并入库）；
+4. 写入 projects/assets/<mod_dir>/<版本目录>/<namespace>/lang/zh_cn.json（en_us.json 一并入库）；
 5. 草稿目录归档到 待审核/_approved/<mod_dir>-<日期>/。
 """
 from __future__ import annotations
@@ -66,8 +66,8 @@ def main() -> int:
         print(f"[FATAL] 仍有 {len(leftovers)} 条未翻译占位：{leftovers[:10]} ...", file=sys.stderr)
         return 1
 
-    # 入库（先写入 projects，再对入库文件跑 Linter）
-    lang_dir = REPO_ROOT / "projects" / args.mc_version / "assets" / args.namespace / "lang"
+    # 入库（先写入 projects，再对入库文件跑 Linter；i18n 式结构 projects/assets/<mod>/<版本>/<ns>/lang/）
+    lang_dir = REPO_ROOT / "projects" / "assets" / args.mod_dir / args.mc_version / args.namespace / "lang"
     lang_dir.mkdir(parents=True, exist_ok=True)
     save_json(lang_dir / "zh_cn.json", clean, indent=4)
     if (d / "en_us.json").exists():
