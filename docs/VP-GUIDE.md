@@ -243,6 +243,6 @@ VP 会加载 `vaultpatcher/modules/` 下全部 `.json`。
 
 ## 7. 提交到本项目
 
-- 模块文件放 `vaultpatcher/modules/<命名空间>.json`（模块头必须带 `_meta`，CI 强制检查）；
+- 模块文件放 `vaultpatcher/modules/<模块名>.json`（**通用层**，全版本生效；模块头必须带 `_meta`，CI 强制检查）。**仅当某版本 mod 的类名/硬编码字符串与其它版本不同**时，才在 `vaultpatcher/modules/<版本组>/<模块名>.json` 另立同名文件（**版本差异层**，整体覆盖，打包时沿回退链复用——写法见第 2 节）；
 - 按模块文件名（不带 `.json`）在 PR 描述里说明；配套的 `pairs` 原文/译文对照表建议一并附上（xlsx/md 均可）；
 - 打包器会自动把模块打进 `vp-modules-{版本组}.zip`，j20UpdateMod 端解压到游戏根目录生效。

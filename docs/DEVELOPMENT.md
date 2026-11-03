@@ -61,7 +61,7 @@ python src/compatibility-checker/run_all.py build/
 | `src/merger/overlay_j20.py` | J20 自有翻译覆盖拉取结果（同名覆盖） |
 | `src/merger/verify.py` | 校验最终资源包结构（pack.mcmeta/语言文件/LICENSE/VP 路径） |
 | `src/merger/check_license.py` | 协议合规检查（包内/仓库，含防背书表述检查） |
-| `src/packer/build_vp.py` | 打包 VP 模块为 `vp-modules-{mc_version}.zip` |
+| `src/packer/build_vp.py` | 按版本回退链解析 VP 模块（通用层 + 版本差异层）打包为 `vp-modules-{mc_version}.zip`（zip 内恒为一层平铺） |
 | `src/packer/build_final.py` | 打包最终资源包（含 pack.mcmeta 署名） |
 | `src/packer/gen_manifest.py` | 生成 manifest.json（版本 `YYYY.MM.DD-NNN`：日期 + 全局发布序号） |
 | `src/packer/verify_release.py` | 发布冒烟校验（逐资产下载 release_url 核对 md5/size） |
