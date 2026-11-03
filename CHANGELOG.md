@@ -3,6 +3,18 @@
 本项目自身版本号从 0.0.1 起递增（语义化迭代：Bug 修复 +0.0.1，重大功能 +0.1.0，架构变更 +1.0.0）。
 Release 发布版本号另按对外接口冻结格式 `YYYY.MM.DD-NNN` 自动生成，两者独立。
 
+## 0.4.0 — 2026-10-28
+
+### 重构（源结构对齐 i18n，维护方式简化）
+- 源结构改为 i18n 式**一棵树**：`projects/assets/<模组>/<版本目录>/<命名空间>/lang/`（原 `projects/<版本组>/assets/…` 五分目录移除，slate 套件迁入 `projects/assets/slate/1.21/`）
+- **版本回退链**（26.3→26.2→26.1→1.21→1.20）：翻译写在最低适用版本目录一份即可，高版本构建自动复用；仅当某版本译文内容不同时才在该版本目录另立一份
+- 输出改 **forge/neoforge 共用一个资产 + fabric 独立**（对齐 i18n 资产形态）：资源包 15 → 10 个唯一资产 `pack-{mc}-{content}.zip`，manifest 15 条目按 content 共指
+- **manifest 冻结契约零改动**（字段、条目、命名格式全兼容），j20UpdateMod 侧无需修改
+
+### 工具
+- `overlay_j20.py` 重写为版本回退链解析器；`build_final.py` 按 (mc, content) 去重产出；`check_pack_format` 增加回退链一致性校验；`approve.py` 入库落点同步新结构
+- 文档同步：CONTRIBUTING / README / FORMATS / DEVELOPMENT
+
 ## 0.3.1 — 2026-10-28
 
 ### 修复
