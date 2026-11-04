@@ -1,0 +1,23 @@
+{
+  "slate.settings.section.inventory": "Inventory",
+  "slate.settings.quick_actions": "Quick action buttons",
+  "slate.settings.quick_actions.tip": "Three small buttons at the top left corner of the inventory: the time of day, the game mode and the weather, one click each. They send the game's own commands, so they only show to players who may use those (operators).",
+
+  "slate.quick.time": "Time: %s",
+  "slate.quick.time.day": "Day",
+  "slate.quick.time.day.go": "Click to make it day",
+  "slate.quick.time.noon": "Noon",
+  "slate.quick.time.noon.go": "Click to make it noon",
+  "slate.quick.time.night": "Night",
+  "slate.quick.time.night.go": "Click to make it night",
+
+  "slate.quick.gamemode": "Game mode: %s",
+  "slate.quick.gamemode.go": "Click to switch to %s",
+
+  "slate.quick.weather": "Weather: %s",
+  "slate.quick.weather.clear": "Clear",
+  "slate.quick.weather.clear.go": "Click to stop the rain",
+  "slate.quick.weather.rain": "Rain",
+  "slate.quick.weather.rain.go": "Click to make it rain",
+  "slate.quick.weather.thunder": "Thunder"
+}

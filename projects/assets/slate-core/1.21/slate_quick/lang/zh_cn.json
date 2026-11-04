@@ -1,0 +1,23 @@
+{
+  "slate.settings.section.inventory": "物品栏",
+  "slate.settings.quick_actions": "快捷操作按钮",
+  "slate.settings.quick_actions.tip": "物品栏左上角的三个小按钮：一天中的时间、游戏模式和天气，各点击一次即可切换。它们发送游戏自带的命令，因此只对有权使用这些命令的玩家（管理员）显示。",
+
+  "slate.quick.time": "时间：%s",
+  "slate.quick.time.day": "白天",
+  "slate.quick.time.day.go": "点击设为白天",
+  "slate.quick.time.noon": "正午",
+  "slate.quick.time.noon.go": "点击设为正午",
+  "slate.quick.time.night": "夜晚",
+  "slate.quick.time.night.go": "点击设为夜晚",
+
+  "slate.quick.gamemode": "游戏模式：%s",
+  "slate.quick.gamemode.go": "点击切换到%s",
+
+  "slate.quick.weather": "天气：%s",
+  "slate.quick.weather.clear": "晴朗",
+  "slate.quick.weather.clear.go": "点击停雨",
+  "slate.quick.weather.rain": "下雨",
+  "slate.quick.weather.rain.go": "点击下雨",
+  "slate.quick.weather.thunder": "雷暴"
+}
