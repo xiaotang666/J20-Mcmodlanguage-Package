@@ -4,6 +4,10 @@
   "asset_template": "Minecraft-Mod-Language-Modpack-{ver_key}{fabric_suffix}.zip",
   "fabric_suffix": "-fabric",
   "release_url_template": "https://github.com/{repo}/releases/latest/download/{asset}",
+  "fallback_prefixes": [
+    "https://ghproxy.net/",
+    "https://gh-proxy.com/"
+  ],
   "version_keys": {
     "1.20": "1-20",
     "1.21": "1-21",
