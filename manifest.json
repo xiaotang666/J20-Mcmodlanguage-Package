@@ -1,14 +1,14 @@
 {
   "schema_version": 1,
   "latest": {
-    "version": "2026.11.04-021",
-    "build_time": "2026-11-04T15:32:42Z",
-    "commit": "2e6315d362043a71a606fa7f8367ee1bd2bfce55",
+    "version": "2026.11.05-022",
+    "build_time": "2026-11-05T04:50:45Z",
+    "commit": "2be50928fde3d89c6a0d923fe0d647847f52c07c",
     "merge_info": {
       "merge_strategy": "i18n_release_base_j20_overlay",
       "fetched_files_count": 60,
       "overlaid_files_count": 0,
-      "added_files_count": 88,
+      "added_files_count": 144,
       "i18n_source": "CFPAOrg/Minecraft-Mod-Language-Package",
       "i18n_branch": "main"
     },
@@ -17,156 +17,156 @@
         "mc_version": "1.20",
         "loader": "forge",
         "asset_name": "pack-1.20-forge.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/pack-1.20-forge.zip",
-        "md5": "c97c372cd482c2e09436732aec9389e5",
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/pack-1.20-forge.zip",
+        "md5": "8f88dbdf0e605cb0efa19314afdd7db1",
         "size": 2024201
       },
       {
         "mc_version": "1.20",
         "loader": "neoforge",
         "asset_name": "pack-1.20-forge.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/pack-1.20-forge.zip",
-        "md5": "c97c372cd482c2e09436732aec9389e5",
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/pack-1.20-forge.zip",
+        "md5": "8f88dbdf0e605cb0efa19314afdd7db1",
         "size": 2024201
       },
       {
         "mc_version": "1.20",
         "loader": "fabric",
         "asset_name": "pack-1.20-fabric.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/pack-1.20-fabric.zip",
-        "md5": "9b280b3bda68041cdcff47b448c6bc37",
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/pack-1.20-fabric.zip",
+        "md5": "914c3e70f88cd6c75b2b0858b168c74b",
         "size": 886206
       },
       {
         "mc_version": "1.21",
         "loader": "forge",
         "asset_name": "pack-1.21-forge.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/pack-1.21-forge.zip",
-        "md5": "ed941f76fd0b2588d8e37ec9ed8c977d",
-        "size": 1959029
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/pack-1.21-forge.zip",
+        "md5": "47dc10ed0de01b38d547dac5fc39a15a",
+        "size": 2008759
       },
       {
         "mc_version": "1.21",
         "loader": "neoforge",
         "asset_name": "pack-1.21-forge.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/pack-1.21-forge.zip",
-        "md5": "ed941f76fd0b2588d8e37ec9ed8c977d",
-        "size": 1959029
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/pack-1.21-forge.zip",
+        "md5": "47dc10ed0de01b38d547dac5fc39a15a",
+        "size": 2008759
       },
       {
         "mc_version": "1.21",
         "loader": "fabric",
         "asset_name": "pack-1.21-fabric.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/pack-1.21-fabric.zip",
-        "md5": "e2ca3c65fdbf404dab925f94bce8cf7f",
-        "size": 530506
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/pack-1.21-fabric.zip",
+        "md5": "2f31d8a91de3ec5aff5a2b3e80d6f34f",
+        "size": 580236
       },
       {
         "mc_version": "26.1",
         "loader": "forge",
         "asset_name": "pack-26.1-forge.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/pack-26.1-forge.zip",
-        "md5": "2af732a992d2a5216f6d8daeacff845f",
-        "size": 264285
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/pack-26.1-forge.zip",
+        "md5": "2249ce24f3c82a4e8c11af12f1f44e59",
+        "size": 314015
       },
       {
         "mc_version": "26.1",
         "loader": "neoforge",
         "asset_name": "pack-26.1-forge.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/pack-26.1-forge.zip",
-        "md5": "2af732a992d2a5216f6d8daeacff845f",
-        "size": 264285
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/pack-26.1-forge.zip",
+        "md5": "2249ce24f3c82a4e8c11af12f1f44e59",
+        "size": 314015
       },
       {
         "mc_version": "26.1",
         "loader": "fabric",
         "asset_name": "pack-26.1-fabric.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/pack-26.1-fabric.zip",
-        "md5": "6d60cc4779c582650814c9cd84c7223e",
-        "size": 264281
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/pack-26.1-fabric.zip",
+        "md5": "238e7d3d2be8dc9c1b1b5f8bed623e46",
+        "size": 314011
       },
       {
         "mc_version": "26.2",
         "loader": "forge",
         "asset_name": "pack-26.2-forge.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/pack-26.2-forge.zip",
-        "md5": "434f9427d80664c84fec39b75b03fce8",
-        "size": 264284
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/pack-26.2-forge.zip",
+        "md5": "cd4b01f2e9d68611b300841c2d92478b",
+        "size": 314014
       },
       {
         "mc_version": "26.2",
         "loader": "neoforge",
         "asset_name": "pack-26.2-forge.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/pack-26.2-forge.zip",
-        "md5": "434f9427d80664c84fec39b75b03fce8",
-        "size": 264284
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/pack-26.2-forge.zip",
+        "md5": "cd4b01f2e9d68611b300841c2d92478b",
+        "size": 314014
       },
       {
         "mc_version": "26.2",
         "loader": "fabric",
         "asset_name": "pack-26.2-fabric.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/pack-26.2-fabric.zip",
-        "md5": "503274cf3bb7129b0b923d8c1ac42ef4",
-        "size": 264280
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/pack-26.2-fabric.zip",
+        "md5": "ee0b12f3da3a7c674033e7a16fac0519",
+        "size": 314010
       },
       {
         "mc_version": "26.3",
         "loader": "forge",
         "asset_name": "pack-26.3-forge.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/pack-26.3-forge.zip",
-        "md5": "a026629420444929e505de8f2c7dc06b",
-        "size": 264285
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/pack-26.3-forge.zip",
+        "md5": "aef8193bf9b67007049178e6a2758419",
+        "size": 314015
       },
       {
         "mc_version": "26.3",
         "loader": "neoforge",
         "asset_name": "pack-26.3-forge.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/pack-26.3-forge.zip",
-        "md5": "a026629420444929e505de8f2c7dc06b",
-        "size": 264285
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/pack-26.3-forge.zip",
+        "md5": "aef8193bf9b67007049178e6a2758419",
+        "size": 314015
       },
       {
         "mc_version": "26.3",
         "loader": "fabric",
         "asset_name": "pack-26.3-fabric.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/pack-26.3-fabric.zip",
-        "md5": "a9426b6f70a65e86003e5927c790af57",
-        "size": 264281
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/pack-26.3-fabric.zip",
+        "md5": "cae5cb89a04a204e9bf3ce586935df19",
+        "size": 314011
       }
     ],
     "vp_packages": [
       {
         "mc_version": "1.20",
         "asset_name": "vp-modules-1.20.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/vp-modules-1.20.zip",
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/vp-modules-1.20.zip",
         "md5": "76cdb2bad9582d23c1f6f4d868218d6c",
         "size": 22
       },
       {
         "mc_version": "1.21",
         "asset_name": "vp-modules-1.21.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/vp-modules-1.21.zip",
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/vp-modules-1.21.zip",
         "md5": "76cdb2bad9582d23c1f6f4d868218d6c",
         "size": 22
       },
       {
         "mc_version": "26.1",
         "asset_name": "vp-modules-26.1.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/vp-modules-26.1.zip",
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/vp-modules-26.1.zip",
         "md5": "76cdb2bad9582d23c1f6f4d868218d6c",
         "size": 22
       },
       {
         "mc_version": "26.2",
         "asset_name": "vp-modules-26.2.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/vp-modules-26.2.zip",
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/vp-modules-26.2.zip",
         "md5": "76cdb2bad9582d23c1f6f4d868218d6c",
         "size": 22
       },
       {
         "mc_version": "26.3",
         "asset_name": "vp-modules-26.3.zip",
-        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.04-021/vp-modules-26.3.zip",
+        "release_url": "https://github.com/xiaotang666/J20-Mcmodlanguage-Package/releases/download/2026.11.05-022/vp-modules-26.3.zip",
         "md5": "76cdb2bad9582d23c1f6f4d868218d6c",
         "size": 22
       }
