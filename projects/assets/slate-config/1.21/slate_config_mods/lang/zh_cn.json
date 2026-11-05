@@ -1,0 +1,22 @@
+{
+  "slate_config.mods.pin": "固定到顶部",
+  "slate_config.mods.unpin": "取消固定",
+  "slate_config.mods.pinned": "已固定",
+  "slate_config.mods.others": "其他模组",
+
+  "slate_config.mods.sort": "排序",
+  "slate_config.mods.sort.name": "名称",
+  "slate_config.mods.sort.last_modified": "最后修改",
+  "slate_config.mods.changed": "%s 前更改",
+
+  "slate_config.mods.hide_libraries": "隐藏库模组",
+  "slate_config.mods.hide_libraries.tip": "排除仅作为其他模组库或 API 的模组。已固定的模组会保留。",
+  "slate_config.mods.hidden": "已隐藏的库模组：%s。搜索仍能找到它们。",
+  "slate_config.mods.library": "库",
+
+  "slate_config.time.just_now": "刚刚",
+  "slate_config.time.minutes_ago": "%s 分钟前",
+  "slate_config.time.hours_ago": "%s 小时前",
+  "slate_config.time.days_ago": "%s 天前",
+  "slate_config.time.weeks_ago": "%s 周前"
+}

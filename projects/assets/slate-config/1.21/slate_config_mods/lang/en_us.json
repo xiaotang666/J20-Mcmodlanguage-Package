@@ -1,0 +1,22 @@
+{
+  "slate_config.mods.pin": "Pin to the top",
+  "slate_config.mods.unpin": "Unpin",
+  "slate_config.mods.pinned": "Pinned",
+  "slate_config.mods.others": "Other mods",
+
+  "slate_config.mods.sort": "Sort",
+  "slate_config.mods.sort.name": "Name",
+  "slate_config.mods.sort.last_modified": "Last modified",
+  "slate_config.mods.changed": "changed %s",
+
+  "slate_config.mods.hide_libraries": "Hide libraries",
+  "slate_config.mods.hide_libraries.tip": "Leaves out the mods that are only libraries or APIs for other mods. Pinned mods stay.",
+  "slate_config.mods.hidden": "Hidden libraries: %s. The search still finds them.",
+  "slate_config.mods.library": "Library",
+
+  "slate_config.time.just_now": "just now",
+  "slate_config.time.minutes_ago": "%sm ago",
+  "slate_config.time.hours_ago": "%sh ago",
+  "slate_config.time.days_ago": "%sd ago",
+  "slate_config.time.weeks_ago": "%sw ago"
+}
