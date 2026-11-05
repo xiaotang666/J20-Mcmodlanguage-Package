@@ -28,13 +28,13 @@ from common import REPO_ROOT, save_json  # noqa: E402
 # ---------- 正则 ----------
 
 PLACEHOLDER_RES = [
-    re.compile(r"%(?:\d+\$)?[sdfg]"),           # %s %d %2$s
     re.compile(r"%\{[^}]*\}"),                  # %{...}
     re.compile(r"\{[a-zA-Z0-9_.]+\}"),          # {0} {player} {item.id}
     re.compile(r"\{\{[^}]*\}\}"),               # {{...}}
     re.compile(r"<[a-zA-Z][a-zA-Z0-9_:./-]*>"), # <item:...> <br>
     re.compile(r"%[a-zA-Z][a-zA-Z0-9_]*%"),     # %msg%
 ]
+PRINTF_RE = re.compile(r"%(?:(\d+)\$)?([sdfg])")  # %s %d %2$s —— 归一化为槽位后对比
 FORMAT_CODE_RE = re.compile(r"(?:§|&)[0-9a-fk-orA-FK-OR]")
 SENSITIVE_WORDS = ["脑残", "煞笔", "傻逼", "尼玛", "妈的", "垃圾玩意", "滚粗", "nmsl"]
 TECHNICAL_VALUE_RE = re.compile(r"^[\w\-.:/ ]*$")  # 纯技术串：ID/布尔/数字/snake_case
@@ -49,6 +49,21 @@ def extract_tokens(text: str, regexes) -> Counter:
     for rx in regexes:
         tokens.update(rx.findall(text))
     return tokens
+
+
+def printf_slots(text: str) -> Counter:
+    """printf 占位符归一化为槽位：%s（隐式）按出现顺序记 %1$s/%2$s…，
+    %3$s（显式）按显式序号记——两种写法语义等价（中文重排语序的标准做法），
+    归一化后对比槽位集合，缺槽/多槽才报错。"""
+    slots: Counter = Counter()
+    implicit = 0
+    for m in PRINTF_RE.finditer(text):
+        if m.group(1):
+            slots[f"%{m.group(1)}${m.group(2)}"] += 1
+        else:
+            implicit += 1
+            slots[f"%{implicit}${m.group(2)}"] += 1
+    return slots
 
 
 def format_codes(text: str) -> Counter:
@@ -121,10 +136,10 @@ def check_file(zh_path: Path, en_data: dict | None, glossary_rules: list[tuple])
             continue
         en = (en_data or {}).get(key, "")
 
-        # 占位符一致性
+        # 占位符一致性（printf 族归一化为槽位后对比，%s 与 %1$s 等价）
         if en:
-            want = extract_tokens(en, PLACEHOLDER_RES)
-            got = extract_tokens(zh, PLACEHOLDER_RES)
+            want = extract_tokens(en, PLACEHOLDER_RES) + printf_slots(en)
+            got = extract_tokens(zh, PLACEHOLDER_RES) + printf_slots(zh)
             for tok, n in want.items():
                 if got.get(tok, 0) != n:
                     issues.append({"file": str(zh_path), "key": key, "severity": "error",
