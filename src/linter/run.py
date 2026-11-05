@@ -66,6 +66,19 @@ def load_glossary(glossary_dir: Path) -> list[dict]:
     return entries
 
 
+def compile_glossary(glossary: list[dict]) -> list[tuple]:
+    """把术语表编译为 (预编译正则, term小写, 译法, 来源)——正则只编译一次（性能关键）。"""
+    rules = []
+    for term in glossary:
+        t = term.get("term", "")
+        trans = term.get("translation", "")
+        if not t or not trans:
+            continue
+        rules.append((re.compile(rf"\b{re.escape(t)}\b", re.IGNORECASE),
+                      t.lower(), trans, term.get("source", "?")))
+    return rules
+
+
 def load_lang_pairs(path: Path) -> tuple[dict, list[str]]:
     """读取语言 JSON，返回 (数据, 错误列表)。带 object_pairs_hook 检测重复键。"""
     errors = []
@@ -95,7 +108,7 @@ def load_lang_pairs(path: Path) -> tuple[dict, list[str]]:
     return data, errors
 
 
-def check_file(zh_path: Path, en_data: dict | None, glossary: list[dict]) -> tuple[list[dict], dict]:
+def check_file(zh_path: Path, en_data: dict | None, glossary_rules: list[tuple]) -> tuple[list[dict], dict]:
     """检查单个 zh_cn 文件，返回 (问题列表, {key: zh_text} 供 TM 一致性检查)。"""
     issues = []
     data, errors = load_lang_pairs(zh_path)
@@ -136,16 +149,13 @@ def check_file(zh_path: Path, en_data: dict | None, glossary: list[dict]) -> tup
                                    "type": "length",
                                    "message": f"译文过短：原文 {len(en)} 字符，译文 {len(zh)} 字符，注意是否截断"})
 
-            # 术语违规
-            for term in glossary:
-                t = term.get("term", "")
-                trans = term.get("translation", "")
-                if not t or not trans:
-                    continue
-                if re.search(rf"\b{re.escape(t)}\b", en, re.IGNORECASE) and trans not in zh:
+            # 术语违规（预编译正则 + 子串预筛：仅疑似命中才跑正则）
+            en_low = en.lower()
+            for rx, t_low, trans, src in glossary_rules:
+                if t_low in en_low and rx.search(en) and trans not in zh:
                     issues.append({"file": str(zh_path), "key": key, "severity": "warning",
                                    "type": "glossary",
-                                   "message": f"术语「{t}」应译为「{trans}」（来源 {term.get('source', '?')}）"})
+                                   "message": f"术语「{t_low}」应译为「{trans}」（来源 {src}）"})
 
         # 敏感词
         for w in SENSITIVE_WORDS:
@@ -186,7 +196,8 @@ def main() -> int:
     if not files:
         print(f"[WARN] 未找到任何 zh_cn.* 文件：{target}", file=sys.stderr)
     glossary = load_glossary(Path(args.glossary))
-    print(f"[INFO] 已加载术语 {len(glossary)} 条，检查文件 {len(files)} 个")
+    glossary_rules = compile_glossary(glossary)
+    print(f"[INFO] 已加载术语 {len(glossary_rules)} 条，检查文件 {len(files)} 个")
 
     all_issues: list[dict] = []
     all_texts: list[tuple[str, tuple[dict, dict]]] = []
@@ -195,7 +206,7 @@ def main() -> int:
         en_data = {}
         if en_path.exists():
             en_data, _ = load_lang_pairs(en_path)
-        issues, zh_data = check_file(zh_path, en_data, glossary)
+        issues, zh_data = check_file(zh_path, en_data, glossary_rules)
         all_issues.extend(issues)
         if en_data:
             all_texts.append((str(zh_path), (en_data, zh_data)))
