@@ -6,8 +6,8 @@
 检测项（错误=阻断构建，警告=记录并放行）：
     [错误] JSON 格式错误（非 UTF-8 无 BOM / 非法 JSON）
     [错误] 文件内重复键
-    [错误] 占位符不一致（%s %d %1$s {0} {player} <item:...> 等缺失或数量不符）
-    [错误] 格式码丢失（§a &l 等颜色/格式代码在译文中丢失）
+    [错误] 占位符不一致（%s %d %2$s {0} {player} <item:...> 等缺失或数量不符）
+    [警告] 格式码增减（§a &l 等颜色/格式代码与原文数量不符——仅影响外观，不阻断构建）
     [警告] 术语违规（未使用 glossary 标准译法）
     [警告] 长度超限（短 UI 文本超出原文 ±15%，溢出/截断风险）
     [警告] 敏感词触发（低质网络用语）
@@ -145,13 +145,13 @@ def check_file(zh_path: Path, en_data: dict | None, glossary_rules: list[tuple])
                     issues.append({"file": str(zh_path), "key": key, "severity": "error",
                                    "type": "placeholder",
                                    "message": f"占位符 {tok} 应出现 {n} 次，译文中 {got.get(tok, 0)} 次"})
-            # 格式码保留
+            # 格式码保留（§ 增减只影响颜色外观，降为警告不阻断——EN 常带作者自带的游离/多余码）
             fc_en, fc_zh = format_codes(en), format_codes(zh)
             for code, n in fc_en.items():
                 if fc_zh.get(code, 0) != n:
-                    issues.append({"file": str(zh_path), "key": key, "severity": "error",
+                    issues.append({"file": str(zh_path), "key": key, "severity": "warning",
                                    "type": "format_code",
-                                   "message": f"格式码 {code} 应出现 {n} 次，译文中 {fc_zh.get(code, 0)} 次"})
+                                   "message": f"格式码 {code} 应出现 {n} 次，译文中 {fc_zh.get(code, 0)} 次（仅外观，不阻断）"})
 
             # 长度（仅短 UI 文本）
             if len(en) <= UI_LENGTH_MAX_SRC and not TECHNICAL_VALUE_RE.match(en):
