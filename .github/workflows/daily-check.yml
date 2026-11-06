@@ -14,7 +14,7 @@ jobs:
       changed: ${{ steps.compare.outputs.changed }}
       tag: ${{ steps.compare.outputs.tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # 判据 = i18n 最新发布资产（release tag）。仓库 SHA 变化不触发（打包基底取自发布包，无新资产则产物不变）
       - name: Compare i18n latest release with last build
