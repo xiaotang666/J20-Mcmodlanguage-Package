@@ -22,6 +22,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import shutil
 import sys
 from pathlib import Path
@@ -42,7 +43,7 @@ def content_roots(group_dir: Path) -> dict[str, Path]:
     return roots
 
 
-def resolve_group(mods_root: Path, chain: list[str]) -> tuple[dict[str, Path], list[str]]:
+def resolve_group(mods_root: Path, chain: list[str], known_versions: set[str]) -> tuple[dict[str, Path], list[str]]:
     """按回退链解析一个版本组的最终文件集：{(模组, 相对路径): 源文件}。
 
     同一 (模组, 相对路径) 以链条中最先命中的版本目录为准（整体文件覆盖）。
@@ -56,9 +57,9 @@ def resolve_group(mods_root: Path, chain: list[str]) -> tuple[dict[str, Path], l
         stray = {d.name for d in mod_dir.iterdir() if not d.is_dir()}
         if stray:
             warnings.append(f"{mod}: 模组目录下存在非版本目录文件：{sorted(stray)}（应只含版本目录）")
-        unknown = version_dirs - set(chain)
+        unknown = version_dirs - known_versions
         if unknown:
-            warnings.append(f"{mod}: 版本目录 {sorted(unknown)} 不在回退链 {chain} 中（检查是否拼错版本）")
+            warnings.append(f"{mod}: 版本目录 {sorted(unknown)} 不在任何回退链中（检查是否拼错版本）")
         for version in chain:  # 链序即优先级：先命中先赢
             vdir = mod_dir / version
             if not vdir.is_dir():
@@ -69,6 +70,27 @@ def resolve_group(mods_root: Path, chain: list[str]) -> tuple[dict[str, Path], l
                 if key not in chosen:
                     chosen[key] = src
     return chosen, warnings
+
+
+def merge_lang_json(sources: list[tuple[str, Path]]) -> tuple[dict, list[str]]:
+    """跨模组同名语言文件合并：按键并集（模组名序，先者胜），冲突记警告。
+    各模组常向同一命名空间补充各自的键（如 dmr 主模组 + 附属模组），并集才是正确产物。"""
+    merged: dict = {}
+    warnings: list[str] = []
+    for mod, src in sources:
+        try:
+            data = json.loads(src.read_text(encoding="utf-8"))
+        except ValueError as e:
+            warnings.append(f"{mod}/{src.name}: JSON 解析失败，跳过合并（{e}）")
+            continue
+        if not isinstance(data, dict):
+            warnings.append(f"{mod}/{src.name}: 顶层不是对象，跳过合并")
+            continue
+        for k, v in data.items():
+            if k in merged and merged[k] != v:
+                warnings.append(f"{src.name}: 键 {k!r} 多模组译文冲突，保留「{merged[k]}」（{mod}）")
+            merged.setdefault(k, v)
+    return merged, warnings
 
 
 def main() -> int:
@@ -93,6 +115,7 @@ def main() -> int:
     target = Path(args.target)
 
     groups = [args.mc_version] if args.mc_version else list(chains)
+    known_versions = {v for chain in chains.values() for v in chain}
 
     overlaid = []
     for group in groups:
@@ -100,24 +123,42 @@ def main() -> int:
         if not chain:
             print(f"[FATAL] project_version_chain 缺少版本组 {group}", file=sys.stderr)
             return 1
-        chosen, warnings = resolve_group(mods_root, chain)
+        chosen, warnings = resolve_group(mods_root, chain, known_versions)
         for w in warnings:
             print(f"[WARN] {w}", file=sys.stderr)
         roots = content_roots(target / group)
         if not roots:
             print(f"[WARN] 拉取结果无内容组目录：{target / group}", file=sys.stderr)
             continue
+        # 跨模组同名目标（如 dmr 主模组 + 附属模组共写 dmr/lang/zh_cn.json）→ 按键并集合并
+        by_rel: dict[str, list[tuple[str, Path]]] = {}
+        for (mod, rel), src in sorted(chosen.items()):
+            by_rel.setdefault(rel, []).append((mod, src))
         for content, dst_root in roots.items():
-            for (mod, rel), src in sorted(chosen.items()):
+            for rel, sources in sorted(by_rel.items()):
                 dst = dst_root / "assets" / rel
                 dst.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(src, dst)
+                if len(sources) == 1:
+                    mod, src = sources[0]
+                    shutil.copy2(src, dst)
+                elif rel.endswith(".json"):
+                    mod = "+".join(m for m, _ in sources)
+                    merged, warns = merge_lang_json(sources)
+                    for w in warns:
+                        print(f"[WARN] {w}", file=sys.stderr)
+                    dst.write_text(json.dumps(merged, ensure_ascii=False, indent=2) + "\n",
+                                   encoding="utf-8")
+                    print(f"[MERGE] {group}/{content}/{rel} <- {mod}（{len(sources)} 模组并集 {len(merged)} 键）")
+                else:
+                    mod, src = sources[-1]  # 非 JSON 无法合并，后者胜并警告
+                    shutil.copy2(src, dst)
+                    print(f"[WARN] {rel} 多模组非 JSON 冲突，采用 {mod}", file=sys.stderr)
                 entry = {"mc_version": group, "content": content, "mod": mod,
                          "namespace": rel.split("/")[0],
-                         "file": rel, "bytes": src.stat().st_size,
-                         "source_version": str(src.relative_to(mods_root / mod).parts[0])}
+                         "file": rel, "bytes": dst.stat().st_size,
+                         "source_version": str(sources[0][1].relative_to(mods_root / sources[0][0]).parts[0])}
                 overlaid.append(entry)
-                print(f"[OVERLAY] {group}/{content}/{rel} <- {mod}/{entry['source_version']}")
+                print(f"[OVERLAY] {group}/{content}/{rel} <- {mod}")
 
     # 覆盖/新增分类：与 fetch-report 对比
     fetch_report = BUILD_DIR / "fetch-report.json"
