@@ -1,0 +1,7 @@
+{
+  "step.bjornlib.collect_item_step": "获得 %s - %s / %s",
+  "step.bjornlib.kill_mob_step": "击杀 %s - %s / %s",
+  "step.bjornlib.consume_item_step": "消耗 %s - %s / %s",
+  "category.bjornlib.main_quest.name": "主线任务",
+  "category.bjornlib.secondary_quest.name": "支线任务"
+}
