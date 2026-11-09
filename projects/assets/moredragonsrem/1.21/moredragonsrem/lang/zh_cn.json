@@ -1,0 +1,23 @@
+{
+  "dragon_breed.moredragons.cherry": "樱花龙",
+  "dragon_breed.moredragons.deer": "鲁道夫龙",
+  "dragon_breed.moredragons.sculk": "幽匿龙",
+  "dragon_breed.moredragons.soul_sand": "灵魂沙龙",
+  "dragon_breed.moredragons.j_lantern": "南瓜灯龙",
+  "dragon_breed.moredragons.warped": "诡异龙",
+  "dragon_breed.moredragons.specter": "幽魂龙",
+  "block.dragonmounts.dragon_egg.moredragons.deer": "鲁道夫龙蛋",
+  "block.dragonmounts.dragon_egg.moredragons.cherry": "樱花龙蛋",
+  "block.dragonmounts.dragon_egg.moredragons.sculk": "幽匿龙蛋",
+  "block.dragonmounts.dragon_egg.moredragons.soul_sand": "灵魂沙龙蛋",
+  "block.dragonmounts.dragon_egg.moredragons.j_lantern": "南瓜灯龙蛋",
+  "block.dragonmounts.dragon_egg.moredragons.specter": "幽魂龙蛋",
+  "block.dragonmounts.dragon_egg.moredragons.warped": "诡异龙蛋",
+  "item.dragonmounts.spawn_egg.moredragons.cherry": "樱花龙刷怪蛋",
+  "item.dragonmounts.spawn_egg.moredragons.deer": "鲁道夫龙刷怪蛋",
+  "item.dragonmounts.spawn_egg.moredragons.sculk": "幽匿龙刷怪蛋",
+  "item.dragonmounts.spawn_egg.moredragons.soul_sand": "灵魂沙龙刷怪蛋",
+  "item.dragonmounts.spawn_egg.moredragons.j_lantern": "南瓜灯龙刷怪蛋",
+  "item.dragonmounts.spawn_egg.moredragons.warped": "诡异龙刷怪蛋",
+  "item.dragonmounts.spawn_egg.moredragons.specter": "幽魂龙刷怪蛋"
+}
