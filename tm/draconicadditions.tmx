@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tmx SYSTEM "tmx14.dtd">
+<tmx version="1.4">
+  <header creationtool="Manual" creationtoolversion="1.0" datatype="PlainText" segtype="sentence" adminlang="en-US" srclang="en-US" o-tmf="Minecraft JSON">
+  </header>
+  <body>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Chaos Crystalizer</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>混沌结晶器</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Chaos Extractor</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>混沌提取器</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Chaos Infuser</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>混沌灌注器</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Chaos Liquifier</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>混沌液化器</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Fake Reactor Core</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>模拟反应堆核心</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Fake Reactor Injector</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>模拟反应堆注入器</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Fake Reactor Stabilizer</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>模拟反应堆稳定器</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>%s exploded in a gory mess when trying to play with powers beyond their control</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>%s 在玩弄无法掌控的力量时炸成了一团血肉模糊的碎块</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Chaos Shards will crystalize here when enough LC is present.</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>当液态混沌充足时，混沌碎片会在此处结晶。</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Accepts Chaos Hearts and any modular item with a Chaos Stabilizer Module.</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>接受混沌之心，以及任何装有混沌稳定模块的模块化物品。</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Accepts Dragon Hearts and any modular item with a Chaos Stabilizer Module.</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>接受龙之心，以及任何装有混沌稳定模块的模块化物品。</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Accepts Chaos Shards.</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>接受混沌碎片。</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Dropping this %s seems like a very bad idea right now.</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>现在丢下这个 %s 似乎是个非常糟糕的主意。</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Moving this %s seems like a very bad idea right now.</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>现在移动这个 %s 似乎是个非常糟糕的主意。</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>The %s explodes in your hand!</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>%s 在你手中爆炸了！</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>The Chaos Container requires shield boosting modules to operate.</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>混沌容器需要护盾增强模块才能运作。</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>WARNING: Your %s is on the verge of exploding!</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>警告：你的 %s 已濒临爆炸！</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Transferred %s mB from %s</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>已从 %2$s 传输 %1$s mB</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Transferred %s mB to %s</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>已向 %2$s 传输 %1$s mB</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>WARNING: No shield detected!</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>警告：未检测到护盾！</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>WARNING: You cannot inject or vent chaos without Chaos Holder Modules!</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>警告：没有混沌存储模块时无法注入或排出混沌！</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>WARNING: Your shield might not be high enough to survive injection!</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>警告：你的护盾可能不足以承受注入！</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>WARNING: Your shield is disabled!</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>警告：你的护盾已禁用！</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>WARNING: Your shielding is getting low!</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>警告：你的护盾能量偏低！</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>WARNING: Injection failed! Cause: No chaos found in Chaos Holder Modules.</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>警告：注入失败！原因：混沌存储模块中没有混沌。</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>WARNING: Unable to vent chaos; your Chaos Holder Modules are full!</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>警告：无法排出混沌；你的混沌存储模块已满！</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Ultimate power in something so seemingly mundane.</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>看似平凡无奇，实则蕴含终极力量。</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>This seems like a bad idea...</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>这似乎不是个好主意……</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>No one contests the power of hermal.</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>无人能质疑惰性土豆的力量。</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>pls no eat</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>求求你别吃</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Your %s breaks apart as the last of the energy reserves give out!</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>随着最后一丝能量储备耗尽，你的 %s 碎裂了！</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Current Instability: %s%%</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>当前不稳定度：%s%%</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Max Chaos: %s B</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>最大混沌：%s B</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Accepts shield modules.</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>接受护盾模块。</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>This block doesn't seem to budge...</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>这个方块似乎纹丝不动……</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>You take the %s off of your harness and set it back down.</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>你将 %s 从挂架上取下并放回地面。</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>You place the %s into your harness.</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>你将 %s 放入挂架中。</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Currently Stored: </seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>当前存储： </seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>OP Cost: %s OP/t</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>OP 消耗：%s OP/刻</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Stored Chaos: %s / %s mB</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>已存混沌：%s / %s mB</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Chaos Container</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>混沌容器</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Chaos Heart</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>混沌之心</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Chaotic Necklace</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>混沌项链</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Draconic Necklace</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>神龙项链</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>hermal</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>惰性土豆</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>hermal?</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>它看起来只是颗土豆。大概吧。</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Inert Potato Boots</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>惰性土豆靴子</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Inert Potato Chestplate</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>惰性土豆胸甲</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Inert Potato Helmet</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>惰性土豆头盔</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Inert Potato Leggings</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>惰性土豆护腿</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Infused Potato Boots</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>灌注土豆靴子</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Infused Potato Chestplate</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>灌注土豆胸甲</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Infused Potato Helmet</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>灌注土豆头盔</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Infused Potato Leggings</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>灌注土豆护腿</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Chaos Injector</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>混沌注入器</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Chaotic Auto Feed Module</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>混沌自动喂食模块</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Semi-Stable Chaos Holder</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>半稳定混沌存储器</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Stable Chaos Holder</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>稳定混沌存储器</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Unstable Chaos Holder</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>不稳定混沌存储器</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Wyvern Necklace</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>飞龙项链</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Draconic Additions</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>龙之进化拓展</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Blood | Injection Rate | Chaos</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>血液 | 注入速率 | 混沌</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Receive RF From Machine</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>从机器接收 RF</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Additional Ticks</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>额外刻数</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Rate of Injection</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>注入速率</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>%s Hearts</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>%s 颗心</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Max Chaos Stored</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>最大混沌存储</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>%s mB</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>%s mB</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Instability</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>不稳定度</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>%s%%</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>%s%%</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Additional Ticks</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>额外刻数</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>%s Ticks</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>%s 刻</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Chaos Injection System</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>混沌注入系统</seg></tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US"><seg>Chaos Stabilizer</seg></tuv>
+      <tuv xml:lang="zh-CN"><seg>混沌稳定器</seg></tuv>
+    </tu>
+  </body>
+</tmx>
