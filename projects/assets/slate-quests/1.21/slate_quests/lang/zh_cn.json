@@ -905,7 +905,7 @@
     "slate_quests.command.import.done": "已将 %s 个章节（%s 个任务）转换到 %s。%s 项已近似处理：详见该处的 ftb-report.txt。请检查；\"/slatequests import ftb install\" 可将 FTB Quests 任务书设为服务器的任务书。",
     "slate_quests.command.import.failed": "导入失败：%s",
     "slate_quests.command.selftest": "自检：%s 通过，%s 失败。",
-    "slate_quests.name": "Slate Quests",
+    "slate_quests.name": "Slate 任务书",
     "slate_quests.title": "任务",
     "key.slate_quests.book": "打开任务书",
     "slate_quests.hub.book": "任务书",
